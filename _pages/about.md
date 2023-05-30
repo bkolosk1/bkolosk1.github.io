@@ -2,7 +2,7 @@
 layout: about
 title: about
 permalink: /
-subtitle: <a href='https://kt.ijs.si/'>Departmant of Knowledge Technologies, Jožef Stefan Institute, Slovenia</a>.
+subtitle: <a href='https://kt.ijs.si/'>Department of Knowledge Technologies, Jožef Stefan Institute, Slovenia</a>.
 
 profile:
   align: right
