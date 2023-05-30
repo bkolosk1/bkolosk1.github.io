@@ -2,96 +2,78 @@
   type: map
   contents:
     - name: Full Name
-      value: Albert Einstein
+      value: Boshko Koloski
     - name: Date of Birth
-      value: 14th March 1879
+      value: 8th January 1999
     - name: Languages
-      value: English, German
+      value: Macedonian, English, Slovenian, Serbian, Croatian
 
 - title: Education
   type: time_table
   contents:
-    - title: PhD
-      institution: University of Zurich, Zurich, Switzerland
-      year: 1905
+    - title: Ph.D. in Artificiall Inteligence 
+      institution: Jozef Stefan Institute, Ljubljana, Slovenia
+      year: 2025(expected)
       description:
-        - Description 1.
-        - Description 2.
-        - title: Description 3.
-          contents:
-            - Sub-description 1.
-            - Sub-description 2.
-    - title: Federal teaching diploma
-      institution: Eidgenössische Technische Hochschule, Zurich, Switzerland
-      year: 1900
+        - Thesis - Graph induced and informed document representations
+        - Supervised by assist. prof. dr. Senja Pollak and dr. Blaž Škrlj
+
+    - title: MSc in Artificiall Inteligence 
+      institution: Jozef Stefan Institute, Ljubljana, Slovenia
+      year: 2022
       description:
-        - Description 1.
-        - Description 2.
+        - Thesis - Knowledge graph informed fake news classification via heterogeneous representation ensembles
+        - Supervised by assist. prof. dr. Senja Pollak and dr. Blaž Škrlj
 
-- title: Experience
-  type: time_table
-  contents:
-    - title: Professor of Theoretical Physics
-      institution: Institute for Advanced Study, Princeton University
-      year: 1933 - 1955
+    - title: BSc in Computer and Information Science
+      institution: Faculty of Computer and Information Science, University of Ljubljana, Slovenia
+      year: 2020
       description:
-        - Description 1.
-        - Description 2.
-        - title: Description 3.
-          contents:
-            - Sub-description 1.
-            - Sub-description 2.
-    - title: Visiting Professor
-      institution: California Institute of Technology, Pasadena, California, US
-      year: 1933
-      description:
-        - Description 1.
-        - Description 2.
+        - Thesis - Knowledge graph-based document embedding enrichment
+        - Supervised by prof. dr. Marko Robnik-Šikonja and dr. Blaž Škrlj
 
-    - title: Director
-      institution: Kaiser Wilhelm Institute for Physics, Berlin, Germany.
-      year: 1917-1933
+#- title: Experience
+#  type: time_table
+#  contents:
+#    - title: Professor of Theoretical Physics
+#      institution: Institute for Advanced Study, Princeton University
+#      year: 1933 - 1955
+#      description:
+#        - Description 1.
+#        - Description 2.
+#        - title: Description 3.
+#          contents:
+#            - Sub-description 1.
+#            - Sub-description 2.
+#    - title: Visiting Professor
+#      institution: California Institute of Technology, Pasadena, California, US
+#      year: 1933
+##      description:
+#        - Description 1.
+#        - Description 2.
 
-    - title: Professor of Theoretical Physics
-      institution: Karl-Ferdinand University, Prague, Czechoslovakia
-      year: 1911 - 1917
-      description:
-
-    - title: Associate Professor of Theoretical Physics
-      institution: University of Zurich, Zurich, Switzerland
-      year: 1909 - 1911
-
-- title: Open Source Projects
-  type: time_table
-  contents:
-    - title: <a href="https://github.com/alshedivat/al-folio">al-folio</a>
-      year: 2015-now
-      description: A beautiful, simple, clean, and responsive Jekyll theme for academics.
-
-- title: Honors and Awards
-  type: time_table
-  contents:
-    - year: 1921
-      items: 
-        - Nobel Prize in Physics 
-        - Matteucci Medal
-    - year: 2029
-      items: 
-        - Max Planck Medal
+#- title: Open Source Projects
+#  type: time_table
+#  contents:
+#    - title: <a href="https://github.com/alshedivat/al-folio">al-folio</a>
+#      year: 2015-now
+#      description: A beautiful, simple, clean, and responsive Jekyll theme for academics.
 
 - title: Academic Interests
   type: nested_list
   contents:
-    - title: Topic 1.
+    - title: Natural Language Processing
       items: 
-        - Description 1.
-        - Description 2.
-    - title: Topic 2.
-      items:
-        - Description 1.
-        - Description 2.
+        - large language models
+        - background knowledge integration
+        - cross-lingual transfer
+    - title: Learning on Graphs
+      items: 
+        - inducing graphs from open sets
+        - representation learning on graphs
+        - graphs and NLP
 
-- title: Other Interests
-  type: list
-  contents:
-    - <u>Hobbies:</u> Hobby 1, Hobby 2, etc.
+#- title: Other Interests
+#  type: list
+#  contents:
+#    - <u>Hobbies:</u> Hobby 1, Hobby 2, etc.

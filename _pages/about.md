@@ -2,25 +2,27 @@
 layout: about
 title: about
 permalink: /
-subtitle: <a href='#'>Affiliations</a>. Address. Contacts. Moto. Etc.
+subtitle: <a href='https://kt.ijs.si/'>Departmant of Knowledge Technologies, Jožef Stefan Institute, Slovenia</a>.
 
 profile:
   align: right
-  image: prof_pic.jpg
+  image: unknown.png
   image_circular: false # crops the image to make it circular
   address: >
-    <p>555 your office number</p>
-    <p>123 your address street</p>
-    <p>Your City, State 12345</p>
+    <p>L39, Dept. of Knowledge Technologies</p>
+    <p>39 Jamova cest</p>
+    <p>Ljubljana, Slovenia 1000</p>
 
-news: true  # includes a list of news items
-latest_posts: true  # includes a list of the newest posts
+news: false  # includes a list of news items
+latest_posts: false  # includes a list of the newest posts
 selected_papers: true # includes a list of papers marked as "selected={true}"
 social: true  # includes social icons at the bottom of the page
 ---
 
-Write your biography here. Tell the world about yourself. Link to your favorite [subreddit](http://reddit.com). You can put a picture in, too. The code is already in, just name your picture `prof_pic.jpg` and put it in the `img/` folder.
+I'm a Ph.D student at the Jožef Stefan International Postgraduate School. My research is focused on the intersection of Natural Language Processing and Learning on Graphs. 
+I am keen on exploring how machine learning models perform in low-resource setting for less-represented languages, especially interested in transfer-learning within cross-lingual applications. 
+I find the process of transferring acquired knowledge fascinating, and I equally enjoy the act of teaching.
 
-Put your address / P.O. box / other info right below your picture. You can also disable any of these elements by editing `profile` property of the YAML header of your `_pages/about.md`. Edit `_bibliography/papers.bib` and Jekyll will render your [publications page](/al-folio/publications/) automatically.
+I am Macedonian, born in Bitola, Macedonia on 8th January 1999. I finished my elementray (OU. Todor Angelevski) and secondary school (SOU. Josip Broz Tito, nautral-mathematics major) in my home town. In 2017 I moved to Ljubljana Slovenia to pursue my further studies. I got my undergraduate degree from the Faculty of Computer and Information Science of the University of Ljubljana. 
 
-Link to your social media connections, too. This theme is set up to use [Font Awesome icons](http://fortawesome.github.io/Font-Awesome/) and [Academicons](https://jpswalsh.github.io/academicons/), like the ones below. Add your Facebook, Twitter, LinkedIn, Google Scholar, or just disable all of them.
+I love talking about science, beer, indie music bands and video games. 
