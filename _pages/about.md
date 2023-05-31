@@ -19,10 +19,8 @@ selected_papers: true # includes a list of papers marked as "selected={true}"
 social: true  # includes social icons at the bottom of the page
 ---
 
-I'm a Ph.D student at the Jožef Stefan International Postgraduate School. My research is focused on the intersection of Natural Language Processing and Learning on Graphs. 
-I am keen on exploring how machine learning models perform in low-resource setting for less-represented languages, especially interested in transfer-learning within cross-lingual applications. 
-I find the process of transferring acquired knowledge fascinating, and I equally enjoy the act of teaching.
+I'm a Ph.D. student at the Jožef Stefan International Postgraduate School. My research is focused on the intersection of Natural Language Processing and Learning on Graphs. I am keen on exploring how machine learning models perform in low-resource settings for less-represented languages, especially interested in transfer-learning within cross-lingual applications. I find the process of transferring acquired knowledge fascinating, and I equally enjoy the act of teaching.
 
-I am Macedonian, born in Bitola, Macedonia on 8th January 1999. I finished my elementray (OU. Todor Angelevski) and secondary school (SOU. Josip Broz Tito, nautral-mathematics major) in my home town. In 2017 I moved to Ljubljana Slovenia to pursue my further studies. I got my undergraduate degree from the Faculty of Computer and Information Science of the University of Ljubljana. 
+I am Macedonian, born in Bitola, Macedonia, on 8th January 1999. I finished my elementary (OU. Todor Angelevski) and secondary school (SOU. Josip Broz Tito, natural-mathematics major) in my hometown. In 2017, I moved to Ljubljana, Slovenia, to pursue my further studies. I got my undergraduate degree from the Faculty of Computer and Information Science of the University of Ljubljana.
 
-I love talking about science, beer, indie music bands and video games. 
+I love talking about science, beer, indie music bands, and video games.
