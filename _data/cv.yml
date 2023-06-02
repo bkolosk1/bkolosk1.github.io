@@ -11,14 +11,14 @@
 - title: Education
   type: time_table
   contents:
-    - title: Ph.D. in Artificiall Inteligence 
+    - title: Ph.D. in Artificial Inteligence
       institution: Jozef Stefan Institute, Ljubljana, Slovenia
       year: 2025(expected)
       description:
         - Thesis - Graph induced and informed document representations
         - Supervised by assist. prof. dr. Senja Pollak and dr. Blaž Škrlj
 
-    - title: MSc in Artificiall Inteligence 
+    - title: MSc in Natural Language Processing
       institution: Jozef Stefan Institute, Ljubljana, Slovenia
       year: 2022
       description:
