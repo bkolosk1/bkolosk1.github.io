@@ -1,0 +1,449 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>POM Ontology Slides</title>
+  <meta name="description" content="An interactive presentation of the Polyoxometalate Ontology">
+  <meta name="author" content="Generated">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/theme/white.css" id="theme">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vis-network@9.1.9/dist/dist/vis-network.min.css" type="text/css" />
+
+  <style>
+    /* Custom styles for better visualization */
+    .reveal pre {
+      font-size: 0.6em; /* Smaller font for JSON */
+      max-height: 70vh; /* Limit height and allow scrolling */
+      overflow-y: auto;
+      background-color: #f8f8f8;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      padding: 10px;
+      box-shadow: none; /* Override default Reveal.js shadow if needed */
+      word-wrap: break-word;
+      white-space: pre-wrap; /* Allow wrapping */
+    }
+    #network {
+      width: 100%;
+      height: 75vh; /* Adjust height as needed */
+      border: 1px solid #ccc;
+      background-color: #ffffff;
+      border-radius: 8px;
+    }
+    /* Style list items for better readability */
+    #highlevel li {
+        font-size: 0.8em;
+        margin-bottom: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+      <section>
+        <h1>Chemical Ontology</h1>
+        <h2>Polyoxometalates & Related Systems</h2>
+        <p>An interactive exploration</p>
+      </section>
+
+      <section>
+        <h2>Hierarchy Overview</h2>
+        <ul>
+         <li><strong>Level 1:</strong> Main Chemical Category<br><small>(e.g., Polyoxovanadate (POV), Coordination Complexes (Non-POM))</small></li>
+         <li><strong>Level 2:</strong> Specific Research Topic/Paper Title<br><small>(e.g., "Advanced Materials for Energy Applications")</small></li>
+         <li><strong>Level 3:</strong> Atomized Chemical Concepts / Keywords<br><small>(e.g., ["POM Type (POV)", "POM Applications", ...])</small></li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>High-Level Concepts Guide</h2>
+        <ul id="highlevel" style="column-count: 2; font-size: 0.7em;">
+          </ul>
+      </section>
+
+      <section>
+        <h2>Raw Ontology JSON Data</h2>
+        <pre><code id="raw-json" class="json" data-trim data-noescape>
+          </code></pre>
+      </section>
+
+      <section>
+        <h2>Ontology Concept Graph</h2>
+        <p><small>Nodes represent Categories (colors), Topics (grey), and Concepts (blue). Edges link Topics to Concepts.</small></p>
+        <div id="network"></div>
+        <p><small>Graph is interactive: zoom, pan, drag nodes.</small></p>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/reveal.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/plugin/highlight/highlight.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vis-network@9.1.9/dist/vis-network.min.js"></script>
+
+  <script>
+    // Full Ontology Data (as provided in the previous step)
+    const ontologyData = {
+      "HighLevelConcepts_Guide": [
+        "POM Type (POV, POMo, POT, PONb, POTa)", "POM Structure Type (Lindqvist, Keggin, Wells-Dawson, etc.)",
+        "POM Synthesis", "POM Structure", "POM Properties", "POM Applications", "POM Functionalization",
+        "POM Solution Chemistry", "POM Spectroscopy", "POM Redox Chemistry", "POM Chirality",
+        "Isopolyoxometalate", "Heteropolyoxometalate",
+        "Heterometallic System (POM-based)", "Anion Templating (POM)", "POM Surface Chemistry",
+        "Organic-Inorganic Hybrid (POM)", "Mixed-Valence (POM)",
+        "Catalysis (POM)", "Energy Materials (POM)", "Photocatalysis (POM)", "Magnetic Materials (POM)",
+        "Biomedical Applications (POM)", "Adsorption/Sorption (POM)",
+        "Coordination Complex (Non-POM)", "Metal-Oxo Cluster (Non-POM)", "Metal Nanocluster (Non-POM)",
+        "Metal-Organic Framework (MOF)", "Coordination Polymer",
+        "Synthesis (General)", "Structure (General)", "Properties (General)", "Functionalization (General)",
+        "Solution Chemistry (General)", "Spectroscopy (General)", "Redox Chemistry (General)",
+        "Coordination Chemistry (General)", "Nanomaterials (General)", "Surface Chemistry (General)",
+        "Crystal Engineering", "Chirality (General)", "Magnetic Materials (General)", "Photocatalysis (General)",
+        "Energy Materials (General)", "Catalysis (General)", "Biomedical Applications (General)",
+        "Ligand Design", "Templating & Self-Assembly (General)",
+        "Crystallography", "Mass Spectrometry", "NMR Spectroscopy", "Electrochemistry", "Computational Chemistry",
+        "Microwave Synthesis", "Lithography",
+        "Non-Chemical"
+      ],
+      "Ontology": {
+        "Polyoxovanadate (POV)": {
+          " Advanced Materials for Energy Applications": ["POM Type (POV)", "POM Applications", "Energy Materials (POM)", "POM Properties"],
+          " Vanadium(III) Complex Formation & Solution Species Characterization via Spectroscopic Methods": ["POM Type (POV)", "POM Solution Chemistry", "POM Spectroscopy", "Structure (General)", "Coordination Chemistry (General)", "Redox Chemistry (General)", "NMR Spectroscopy"],
+          " Metal Clusters & Anion Templates": ["POM Type (POV)", "POM Synthesis", "POM Structure", "Anion Templating (POM)", "Coordination Chemistry (General)"],
+          " Organic Derivatives of Polyoxometalates Synthesis & Characterization": ["POM Type (POV)", "POM Functionalization", "POM Synthesis", "POM Structure", "Organic-Inorganic Hybrid (POM)"],
+          " Chiral Polyoxovanadate III Structures & Ferromagnetism": ["POM Type (POV)", "POM Chirality", "POM Structure", "Magnetic Materials (POM)", "POM Properties"],
+           " Imidazole-Functionalized Polyoxovanadium Clusters as Selective Alcohol Oxidation Catalysts": ["POM Type (POV)", "POM Functionalization", "Catalysis (POM)", "POM Applications", "POM Synthesis", "POM Structure"],
+           " Synthesis & Analysis of Sodium Cyclo-{μ6-(Sulfato-O,O'',O''')}tris[μ-(Alanine-O,O'')-μ-Oxo]tris(μ-Hydroxo-μ-Oxo)Hexa[Oxovanadium(V)] Sulfate Tridecahydrate": ["POM Type (POV)", "Isopolyoxometalate", "POM Synthesis", "POM Structure", "Coordination Chemistry (General)", "Crystallography"],
+           " Organic Modification of Polyoxovanadates via Sequential Esterification and Amidation Reactions": ["POM Type (POV)", "POM Functionalization", "POM Synthesis", "Organic-Inorganic Hybrid (POM)"],
+           " Polyoxovanadate Derivative Synthesis & Characterization": ["POM Type (POV)", "POM Synthesis", "POM Functionalization", "POM Structure"],
+           " Polyoxovanadate-based Metal-Organic Polyhedra & Dye Absorption": ["POM Type (POV)", "Heterometallic System (POM-based)", "MOF", "POM Synthesis", "POM Structure", "Adsorption/Sorption (POM)", "POM Applications", "POM Properties", "Templating & Self-Assembly (General)"],
+           " Synthesis & Characterization of Vanadium(V) Oxide-based Polyionic Compounds": ["POM Type (POV)", "Isopolyoxometalate", "POM Synthesis", "POM Structure"] // Assuming polyionic refers to isopolyvanadates
+        },
+        "Polyoxomolybdate (POMo)": {
+           " Advanced Materials for Energy Applications": ["POM Type (POMo)", "POM Applications", "Energy Materials (POM)", "POM Properties"],
+           " Organic Derivatives of Polyoxometalates (POMs) via Esterification and Functional Group Transformation": ["POM Type (POMo)", "POM Functionalization", "POM Synthesis", "Organic-Inorganic Hybrid (POM)"],
+           " Molybdenum Imidazole Complexes: Synthesis, Properties, and Reduction Behavior": ["POM Type (POMo)", "POM Synthesis", "POM Properties", "POM Redox Chemistry", "Coordination Chemistry (General)"],
+           " Synthesis and Characterization of Cantilever-Type Polyoxometalates with Phosphonate Scaffolds": ["POM Type (POMo)", "POM Synthesis", "POM Structure", "POM Functionalization"],
+           " Molybdate Complexes with Oxalate Ligands": ["POM Type (POMo)", "POM Synthesis", "POM Structure", "Coordination Chemistry (General)"],
+           " Metal Cluster Formation & Anion Templating Effects": ["POM Type (POMo)", "POM Synthesis", "POM Structure", "Anion Templating (POM)"],
+           " Silver Anion-Templated Clusters: Structure, Properties, and Photoluminescence": ["POM Type (POMo)", "Heterometallic System (POM-based)", "Anion Templating (POM)", "POM Structure", "POM Properties", "Spectroscopy"],
+           " Molybdenum Oxide Synthesis & Crystal Structure Analysis in Acetic Anhydride": ["POM Type (POMo)", "Isopolyoxometalate", "POM Synthesis", "POM Structure", "Solid-State Chemistry"],
+           " Molybdate Salts Synthesis & Structure Analysis": ["POM Type (POMo)", "Isopolyoxometalate", "POM Synthesis", "POM Structure", "Solid-State Chemistry"],
+           " Molybdenum Squarate Complexes Synthesis & Characterization": ["POM Type (POMo)", "POM Synthesis", "POM Structure", "Coordination Chemistry (General)"],
+           " Synthesis & Structural Analysis of Glycine-Chelated Tetramolybdate Compounds": ["POM Type (POMo)", "Isopolyoxometalate", "POM Synthesis", "POM Structure", "Coordination Chemistry (General)", "Biomedical Applications (POM)"],
+           " Molybdenum & Tungsten Complexes with 3-Hydroxypicolinic Acid Characterization & Catalysis": ["POM Type (POMo)", "POM Type (POT)", "Heterometallic System (POM-based)", "POM Synthesis", "POM Structure", "Catalysis (POM)", "Coordination Chemistry (General)"], // Contains Mo and W
+           " Molybdenum-Containing Polyoxometalate Bisphosphonate Complexes as Potential Anticancer Agents": ["POM Type (POMo)", "Biomedical Applications (POM)", "POM Applications", "POM Properties", "POM Functionalization", "POM Synthesis"],
+           " Organic Cluster Frameworks from Lindqvist-Type Polyoxometalates (POMs) & Electrochemical Applications": ["POM Type (POMo)", "POM Structure Type (Lindqvist)", "MOF", "POM Synthesis", "POM Structure", "Solid-State Chemistry", "POM Functionalization", "POM Applications", "Energy Materials (POM)", "Electrochemistry"], // Assume POMo Lindqvist unless specified
+           " Crystal Engineering & Chiral Resolution of Mo2O4(H2dtpa) Complexes": ["POM Type (POMo)", "Isopolyoxometalate", "Crystal Engineering", "Chirality (General)", "POM Structure", "Coordination Chemistry (General)"], // Mo complex, likely POM-related dimer
+           " Cerium-Isopolyoxomolybdate Hybrid Complexes as Single-Molecule Magnets": ["POM Type (POMo)", "Isopolyoxometalate", "Heterometallic System (POM-based)", "Magnetic Materials (POM)", "POM Properties", "POM Synthesis", "POM Structure"],
+           " Chiral Polyoxomolybdate Synthesis & Structure Analysis": ["POM Type (POMo)", "POM Chirality", "POM Synthesis", "POM Structure"],
+           " Molybdenum Oxo-Complexes & Isomerism": ["POM Type (POMo)", "POM Structure", "Coordination Chemistry (General)"],
+           " Molybdenum Oxalates & Pyridine Complexes Synthesis & Structural Analysis": ["POM Type (POMo)", "POM Synthesis", "POM Structure", "Coordination Chemistry (General)"],
+           " Copper-based Heterometallic Hybrid Compounds with Phosphomolybdate POMs: Synthesis, Structural Analysis, Magnetic Properties, and Selective Sorption of Organic Dyes.": ["POM Type (POMo)", "Heteropolyoxometalate", "Heterometallic System (POM-based)", "POM Synthesis", "POM Structure", "Magnetic Materials (POM)", "Adsorption/Sorption (POM)", "POM Applications", "POM Properties"],
+           " Molybdate Complexes with Oxalate Ligands: Synthesis, Structures, and Properties": ["POM Type (POMo)", "POM Synthesis", "POM Structure", "POM Properties", "Coordination Chemistry (General)"]
+        },
+        "Polyoxotungstate (POT)": {
+           " Advanced Materials for Energy Applications": ["POM Type (POT)", "POM Applications", "Energy Materials (POM)", "POM Properties"], // Handle duplicate
+           " Metal Cluster Formation & Anion Templating Effects": ["POM Type (POT)", "POM Synthesis", "POM Structure", "Anion Templating (POM)"],
+           " Silver Tetrahedral Anion-Templated Clusters: Structure, Properties, and Surface Motifs": ["POM Type (POT)", "Heterometallic System (POM-based)", "Anion Templating (POM)", "POM Structure", "POM Properties", "POM Surface Chemistry"],
+           " Molybdenum & Tungsten Complexes with Hydroxypicolinic Acid": ["POM Type (POT)", "POM Type (POMo)", "Heterometallic System (POM-based)", "POM Synthesis", "Coordination Chemistry (General)"], // Already listed under POMo, here for completeness if context implies POT focus
+           " Cluster Organic Frameworks with Lindqvist-Type POM SBUs": ["POM Type (POT)", "POM Structure Type (Lindqvist)", "MOF", "POM Synthesis", "POM Structure", "Solid-State Chemistry", "POM Functionalization"], // Assumes POT Lindqvist unless specified
+           " Bio-functionalized Triazol-Modified Polyoxometalates Synthesis": ["POM Type (POT)", "POM Functionalization", "POM Synthesis", "Biomedical Applications (POM)", "Organic-Inorganic Hybrid (POM)"],
+           " Inorganic-Organic Hybrid Clusters with Pyrene Probes & Vesicle Formation Studies": ["POM Type (POT)", "POM Functionalization", "Organic-Inorganic Hybrid (POM)", "POM Synthesis", "POM Structure", "POM Properties", "Spectroscopy", "Templating & Self-Assembly (General)"],
+           " Large Tetrahedral MOP Crystals & Supramolecular Transformation": ["POM Type (POT)", "Crystal Engineering", "POM Structure", "Templating & Self-Assembly (General)", "Solid-State Chemistry"], // Assumes POT-based MOP
+           " Hybrid Polyoxometalates Functionalization Protocols": ["POM Type (POT)", "POM Functionalization", "POM Synthesis"],
+           " Silver-Phosphonate Clusters & Tungstate Core Structures": ["POM Type (POT)", "Heterometallic System (POM-based)", "POM Synthesis", "POM Structure", "Coordination Chemistry (General)"],
+           " Synthesis and Characterization of Cantilever-Type Polyoxometalates with Phosphonate Scaffolds": ["POM Type (POT)", "POM Synthesis", "POM Structure", "POM Functionalization"], // Assume POT if listed here
+           " Organic Derivatives of Polyoxometalates via Tosyl Ester Transformation": ["POM Type (POT)", "POM Functionalization", "POM Synthesis", "Organic-Inorganic Hybrid (POM)"]
+        },
+        "Polyoxoniobate (PONb)": {
+           " Advanced Materials for Energy Applications": ["POM Type (PONb)", "POM Applications", "Energy Materials (POM)", "POM Properties"],
+           " Metal Clusters & Anion Templating Effects": ["POM Type (PONb)", "POM Synthesis", "POM Structure", "Anion Templating (POM)"],
+           " Photocatalytic Tellurium-Substituted Lindqvist-Type Polyoxoniobates for Hydrogen Evolution": ["POM Type (PONb)", "POM Structure Type (Lindqvist)", "Photocatalysis (POM)", "Energy Materials (POM)", "Heterometallic System (POM-based)", "POM Synthesis", "POM Structure", "POM Properties", "POM Applications"],
+           " Photocatalytic As-substituted Peroxopolyoxoniobate Water Splitting Materials": ["POM Type (PONb)", "Photocatalysis (POM)", "Energy Materials (POM)", "Heterometallic System (POM-based)", "POM Synthesis", "POM Structure", "POM Properties", "POM Applications"],
+           " Peroxoniobophosphate Clusters & Niobium Phosphate Films via Electron-Beam Lithography": ["POM Type (PONb)", "Heteropolyoxometalate", "POM Synthesis", "POM Structure", "Nanomaterials (General)", "Lithography", "POM Applications"]
+        },
+        "Polyoxotantalate (POTa)": {
+           " Metal Clusters & Surface Coordination Chemistry": ["POM Type (POTa)", "POM Surface Chemistry", "Coordination Chemistry (General)", "POM Structure"] // Assuming POTa context
+        },
+        "Heterometallic POM Systems (Mixed/General)": {
+            " Molybdenum & Vanadium Complexes & Polyhedra for Catalysis & Dye Adsorption": ["POM Type (POV)", "POM Type (POMo)", "Heterometallic System (POM-based)", "POM Synthesis", "POM Structure", "Catalysis (POM)", "Adsorption/Sorption (POM)", "POM Applications", "Coordination Chemistry (General)"],
+            " Molybdate Oxalate Complexes & Vanadate Cyclic Structures": ["POM Type (POV)", "POM Type (POMo)", "Heterometallic System (POM-based)", "POM Synthesis", "POM Structure", "Coordination Chemistry (General)"],
+            " Inorganic Clusters & Lead-Hydroxide Complexes": ["Heterometallic System (POM-based)", "POM Synthesis", "POM Structure", "Coordination Chemistry (General)"], // Assumes POM involvement (e.g., POV/POT templating Pb)
+            " Vanadium-Carboxylate Complexes & Nickel Polyoxotungstate Catalysis": ["POM Type (POT)", "Heterometallic System (POM-based)", "Catalysis (POM)", "Coordination Complex (Non-POM)"], // Ni-POT catalyst with V complex substrate/modifier?
+            " Vanadium(III) Complex Formation & Solution Structure Analysis": ["Heterometallic System (POM-based)", "Solution Chemistry (General)", "Structure (General)", "Coordination Chemistry (General)"], // If referring to V within POT/POMo context
+            " Vanadium(IV) Complexes with Bipyridine Ligands via Organometallic Synthesis": ["Heterometallic System (POM-based)", "Synthesis (General)", "Coordination Chemistry (General)", "Functionalization (General)"], // If referring to V within POT context
+            " Organic Functionalization & Redox Behavior of Vanadium Aggregates": ["Heterometallic System (POM-based)", "Functionalization (General)", "Redox Chemistry (General)", "Properties (General)"], // If referring to V within POT context
+            " Vanadium Carboxylate Complex Synthesis & Crystallography": ["Heterometallic System (POM-based)", "Synthesis (General)", "Structure (General)", "Crystal Engineering"], // If referring to V within POT/POMo context
+            " Nickel-based Photocatalyst for Efficient Hydrogen Production": ["Heterometallic System (POM-based)", "Photocatalysis (POM)", "Energy Materials (POM)", "POM Applications", "Catalysis (POM)"], // If Ni is incorporated into/supported by POT
+            " Redox-Active Zr-Containing Coordination Polymers (1M)": ["Heterometallic System (POM-based)", "Coordination Polymer", "Redox Chemistry (General)", "Properties (General)", "Coordination Chemistry (General)", "Solid-State Chemistry"], // If Zr incorporates/links POMs (e.g., POT)
+            " Molybdate Complexes with Oxalate Ligands: Structural Analysis and Bonding Modes": ["Heterometallic System (POM-based)", "Structure (General)", "Coordination Chemistry (General)"], // If referring to Mo within POT context
+            " Molybdate Salts Synthesis & Structure Analysis": ["Heterometallic System (POM-based)", "Synthesis (General)", "Structure (General)"], // If referring to Mo within POT context
+            " Molybdenum Imidazole Complexes: Synthesis, Properties, and Redox Behavior": ["Heterometallic System (POM-based)", "Synthesis (General)", "Properties (General)", "Redox Chemistry (General)", "Coordination Chemistry (General)"] // If referring to Mo within POT context
+        },
+        "Coordination Complexes (Non-POM)": {
+            " Organic Functionalized Vanadium Compounds: Synthesis, Post-Functionalization, and Redox Behavior": ["Coordination Complex (Non-POM)", "Functionalization (General)", "Synthesis (General)", "Redox Chemistry (General)", "Coordination Chemistry (General)"],
+            " Organometallic Vanadium Complexes with Bipyridine Ligands": ["Coordination Complex (Non-POM)", "Synthesis (General)", "Coordination Chemistry (General)"],
+            " Vanadium(V) Oxide Complexes with Alanine and Sulfate Ligands": ["Coordination Complex (Non-POM)", "Synthesis (General)", "Structure (General)", "Coordination Chemistry (General)"], // Likely discrete V-oxo complexes, not extended POMs
+            " Chiral Vanadium Complexes & Magnetism": ["Coordination Complex (Non-POM)", "Chirality (General)", "Magnetic Materials (General)", "Properties (General)", "Coordination Chemistry (General)"],
+            " Vanadium Acetate Complexes Structure & Stability in Solution": ["Coordination Complex (Non-POM)", "Structure (General)", "Solution Chemistry (General)", "Properties (General)"],
+            " Synthesis & Characterization of Chiral Mixed-Valence Vanadium Oxide Hybrid Complexes (2005)": ["Coordination Complex (Non-POM)", "Chirality (General)", "Synthesis (General)", "Structure (General)", "Redox Chemistry (General)", "Organic-Inorganic Hybrid (POM)"], // May be small V-oxo clusters
+            " Vanadium Anion Complexes Synthesis & Crystallography": ["Coordination Complex (Non-POM)", "Synthesis (General)", "Structure (General)", "Crystal Engineering"],
+            " Vanadium(V) Oxide Complexes with Acetate and Nitrate Ligands": ["Coordination Complex (Non-POM)", "Synthesis (General)", "Structure (General)", "Coordination Chemistry (General)"],
+            " \"Synthesis and Phase Transition of Vanadyl Phosphate Polymers\"": ["Coordination Polymer", "Synthesis (General)", "Structure (General)", "Solid-State Chemistry", "Properties (General)"], // V-Phosphate, not V-Oxide POM
+            " Silver(I)-Phenylethynide Clusters with (t)BuPO(3)V(4)O(8) Shell Component & Template Anion Occupation": ["Coordination Complex (Non-POM)", "Heterometallic System (POM-based)", "Templating & Self-Assembly (General)", "Structure (General)"], // V-Phosphonate cluster, not pure V-Oxide POM
+            " Molybdenum Carboxylato Complexes Synthesis & Structure Analysis": ["Coordination Complex (Non-POM)", "Synthesis (General)", "Structure (General)", "Coordination Chemistry (General)"],
+            " Synthesis & Structural Analysis of Zigzag Chain Molybdenum Compounds with Glycine Ligands": ["Coordination Polymer", "Synthesis (General)", "Structure (General)", "Coordination Chemistry (General)"],
+            " Molybdenum Oxo-Complexes & Isomerism": ["Coordination Complex (Non-POM)", "Structure (General)", "Coordination Chemistry (General)"],
+            " Copper Alkynides & Magnetism": ["Coordination Complex (Non-POM)", "Magnetic Materials (General)", "Properties (General)", "Coordination Chemistry (General)"],
+            " Zwitterionic Coordination Polymers (1M) Synthesis & Characterization (2006)": ["Coordination Polymer", "Synthesis (General)", "Structure (General)", "Coordination Chemistry (General)", "Solid-State Chemistry"],
+            " Organometallic Chemistry: Thiophene-2-Carboxylate Derivatives of Vanadium Species under Aerobic Conditions": ["Coordination Complex (Non-POM)", "Coordination Chemistry (General)", "Synthesis (General)", "Functionalization (General)", "Redox Chemistry (General)"],
+            " Vanadium Hybrid Compounds & Organic Functionalization": ["Coordination Complex (Non-POM)", "Functionalization (General)", "Synthesis (General)", "Organic-Inorganic Hybrid (POM)"],
+            " Molybdenum Oxohalides & Squarate Ligands Interactions": ["Coordination Complex (Non-POM)", "Coordination Chemistry (General)", "Structure (General)"],
+            " Mo-based Carboxylato Complexes Synthesis & Characterization": ["Coordination Complex (Non-POM)", "Synthesis (General)", "Structure (General)", "Coordination Chemistry (General)"],
+            " Vanadium(IV) Complexes Synthesis & Magnetic Properties": ["Coordination Complex (Non-POM)", "Synthesis (General)", "Magnetic Materials (General)", "Properties (General)", "Coordination Chemistry (General)"],
+            " Vanadium Complexes & Solution Chemistry": ["Coordination Complex (Non-POM)", "Solution Chemistry (General)", "Coordination Chemistry (General)"]
+         },
+        "Metal-Oxo Clusters (Non-POM)": {
+            " Titanium Oxo Clusters in Water Solutions & Photocatalysis": ["Metal-Oxo Cluster (Non-POM)", "Photocatalysis (General)", "Solution Chemistry (General)", "Synthesis (General)", "Structure (General)"],
+            " Aluminum Clusters Synthesis & Structure Analysis": ["Metal-Oxo Cluster (Non-POM)", "Synthesis (General)", "Structure (General)"], // Assuming Al-Oxo/Hydroxo
+            " Aluminum Hydroxide Polymorphs & Crystal Structure Analysis": ["Metal-Oxo Cluster (Non-POM)", "Structure (General)", "Solid-State Chemistry", "Crystallography"],
+            " Titanium Oxo Clusters in Aqueous Solutions for Photocatalysis Research": ["Metal-Oxo Cluster (Non-POM)", "Photocatalysis (General)", "Solution Chemistry (General)", "Synthesis (General)", "Structure (General)"],
+            " Aluminum Cluster Synthesis & Natural Water Systems Interaction": ["Metal-Oxo Cluster (Non-POM)", "Synthesis (General)", "Solution Chemistry (General)", "Applications"],
+            " Lead Hydroxide Clusters & Nitrate Salts Crystallography": ["Metal-Oxo Cluster (Non-POM)", "Structure (General)", "Crystal Engineering", "Crystallography"],
+            " Titanium Oxo Clusters Synthesis & Analysis": ["Metal-Oxo Cluster (Non-POM)", "Synthesis (General)", "Structure (General)"]
+        },
+        "Metal Nanoclusters (Non-POM / General)": {
+            " Nanoclusters & Alkynyl Ligands: Synthesis, Structures, and Properties": ["Metal Nanocluster (Non-POM / General)", "Nanomaterials (General)", "Synthesis (General)", "Structure (General)", "Properties (General)", "Functionalization (General)", "Coordination Chemistry (General)", "Ligand Design"], // Could be Au, Ag, Cu etc. or even POM-templated
+            " Metal Nanoclusters & Surface Ligand Chemistry": ["Metal Nanocluster (Non-POM / General)", "Nanomaterials (General)", "Surface Chemistry (General)", "Coordination Chemistry (General)", "Synthesis (General)", "Ligand Design"],
+            " Surface Coordination Chemistry of Metal Nanoclusters for Catalysis Design": ["Metal Nanocluster (Non-POM / General)", "Nanomaterials (General)", "Surface Chemistry (General)", "Coordination Chemistry (General)", "Catalysis (General)", "Applications"],
+            " Organogold Clusters Synthesis & Mass Spectrometry Analysis": ["Metal Nanocluster (Non-POM / General)", "Nanomaterials (General)", "Synthesis (General)", "Spectroscopy", "Mass Spectrometry"],
+            " Alkynyl-Protected Metal Nanoclusters: Synthesis, Structures, Properties, and Applications": ["Metal Nanocluster (Non-POM / General)", "Nanomaterials (General)", "Synthesis (General)", "Structure (General)", "Properties (General)", "Applications", "Functionalization (General)", "Ligand Design"],
+            " Gold Nanoclusters with Alkynyl Ligands: Structure, Properties, and Applications": ["Metal Nanocluster (Non-POM / General)", "Nanomaterials (General)", "Structure (General)", "Properties (General)", "Applications", "Functionalization (General)", "Ligand Design"]
+        },
+        "Metal-Organic Frameworks / Polyhedra (Non-POM Primary)": {
+             " Metal-Organic Polyhedra with Cationic Dye Absorption Properties": ["MOF", "Synthesis (General)", "Structure (General)", "Applications", "Properties (General)", "Adsorption/Sorption (POM)", "Templating & Self-Assembly (General)"] // If not explicitly POM-based
+        },
+        "General Chemistry Concepts/Methods": {
+            " Synthesis & Characterization of Polyanionic Compounds using Microwave-Assisted Reactions": ["Synthesis (General)", "Structure (General)", "Microwave Synthesis"],
+            " Transition Element Clusters & Crystal Field Chemistry": ["Structure (General)", "Properties (General)", "Coordination Chemistry (General)", "Computational Chemistry"] // General theory
+        },
+        "Non-Chemical": {
+            " China's National Natural Science Foundation (NSFC) and Ministry of Education Grants": ["Non-Chemical"]
+        }
+      }
+    };
+
+    // Initialize Reveal.js
+    Reveal.initialize({
+      hash: true, // Enable linking to slides
+      plugins: [ RevealHighlight ] // Enable syntax highlighting
+    });
+
+    // --- Populate Slides ---
+
+    // Slide 3: High-Level Concepts List
+    const hlListContainer = document.getElementById('highlevel');
+    if (hlListContainer) {
+      ontologyData.HighLevelConcepts_Guide.forEach(concept => {
+        const li = document.createElement('li');
+        li.textContent = concept;
+        hlListContainer.appendChild(li);
+      });
+    } else {
+        console.error("Element with ID 'highlevel' not found.");
+    }
+
+
+    // Slide 4: Raw JSON Preview
+    const rawJsonContainer = document.getElementById('raw-json');
+     if (rawJsonContainer) {
+        rawJsonContainer.textContent = JSON.stringify(ontologyData, null, 2); // Pretty print JSON
+     } else {
+        console.error("Element with ID 'raw-json' not found.");
+     }
+
+
+    // Slide 5: Graph Visualization (using Vis.js)
+    const networkContainer = document.getElementById('network');
+    if (networkContainer) {
+      try {
+        const nodes = [];
+        const edges = [];
+        const highLevelConcepts = ontologyData.HighLevelConcepts_Guide;
+        let topicCounter = 0; // Unique ID counter for topics
+
+        // Define colors for categories (add more as needed)
+        const categoryColors = {
+          "Polyoxovanadate (POV)": "#ff9999", // Light red
+          "Polyoxomolybdate (POMo)": "#99ccff", // Light blue
+          "Polyoxotungstate (POT)": "#99ff99", // Light green
+          "Polyoxoniobate (PONb)": "#ffff99", // Light yellow
+          "Polyoxotantalate (POTa)": "#ffcc99", // Light orange
+          "Heterometallic POM Systems (Mixed/General)": "#cc99ff", // Light purple
+          "Coordination Complexes (Non-POM)": "#ff99cc", // Light pink
+          "Metal-Oxo Clusters (Non-POM)": "#99ffff", // Light cyan
+          "Metal Nanoclusters (Non-POM / General)": "#ffccff", // Light magenta
+          "Metal-Organic Frameworks / Polyhedra (Non-POM Primary)": "#cccccc", // Light grey
+          "General Chemistry Concepts/Methods": "#c0c0c0", // Silver
+          "Non-Chemical": "#e0e0e0", // Lighter grey
+          "default": "#f0f0f0" // Default grey
+        };
+
+        // 1. Add High-Level Concept nodes
+        highLevelConcepts.forEach((concept, index) => {
+          nodes.push({
+            id: `H${index}`, // Unique ID for high-level concepts
+            label: concept.length > 30 ? concept.substring(0, 27) + '...' : concept, // Shorten long labels
+            title: concept, // Full label on hover
+            group: 'HighLevelConcept', // Group for styling
+            shape: 'ellipse',
+            color: '#add8e6' // Light blue for concepts
+          });
+        });
+
+        // 2. Add Category nodes and Topic nodes, and Edges
+        Object.entries(ontologyData.Ontology).forEach(([category, topics]) => {
+          const categoryId = `CAT-${category.replace(/\s+/g, '-')}`; // Unique ID for category
+          const categoryColor = categoryColors[category] || categoryColors['default'];
+
+          // Add Category Node
+          nodes.push({
+            id: categoryId,
+            label: category,
+            title: category,
+            group: 'Category',
+            shape: 'box', // Different shape for categories
+            color: categoryColor,
+            font: { size: 16, bold: true }
+          });
+
+          // Add Topic Nodes and Edges
+          Object.entries(topics).forEach(([topic, tags]) => {
+            const topicId = `T${topicCounter++}`; // Globally unique ID for topic node
+            const shortTopicLabel = topic.length > 40 ? topic.substring(0, 37) + '...' : topic;
+
+            nodes.push({
+              id: topicId,
+              label: shortTopicLabel,
+              title: topic, // Full topic on hover
+              group: category, // Group by main category for potential clustering/styling
+              shape: 'dot', // Simple shape for topics
+              size: 10,
+              color: '#d3d3d3' // Grey for topics
+            });
+
+            // Edge from Category to Topic
+            edges.push({
+                from: categoryId,
+                to: topicId,
+                arrows: 'to',
+                color: { color: categoryColor, opacity: 0.5 }, // Edge color matches category
+                dashes: true // Dashed line for category link
+            });
+
+
+            // Edges from Topic to High-Level Concepts
+            tags.forEach(tag => {
+              const highLevelIndex = highLevelConcepts.indexOf(tag);
+              if (highLevelIndex !== -1) {
+                edges.push({
+                  from: topicId, // Edge from Topic
+                  to: `H${highLevelIndex}`, // To High-Level Concept
+                  arrows: 'to',
+                  color: { color: '#b0c4de', opacity: 0.6 } // Light Steel Blue for concept links
+                });
+              } else {
+                console.warn(`Tag "${tag}" not found in HighLevelConcepts_Guide for topic "${topic}"`);
+              }
+            });
+          });
+        });
+
+        // Create Vis.js datasets
+        const nodesDataSet = new vis.DataSet(nodes);
+        const edgesDataSet = new vis.DataSet(edges);
+
+        // Provide the data in the vis format
+        const data = {
+          nodes: nodesDataSet,
+          edges: edgesDataSet,
+        };
+
+        // Vis.js options for layout and physics
+        const options = {
+          layout: {
+            hierarchical: false // Use physics-based layout, not hierarchical
+          },
+          nodes: {
+             borderWidth: 1,
+             borderWidthSelected: 2,
+             font: {
+                 size: 12,
+                 face: 'arial',
+                 color: '#333'
+             }
+          },
+          edges: {
+            width: 1,
+            smooth: {
+                type: 'continuous', // Makes edges look smoother
+                forceDirection: 'none',
+                roundness: 0.5
+            }
+          },
+          physics: {
+            enabled: true,
+            solver: 'forceAtlas2Based', // A good general-purpose physics solver
+             forceAtlas2Based: {
+                 gravitationalConstant: -50,
+                 centralGravity: 0.01,
+                 springLength: 100,
+                 springConstant: 0.08,
+                 damping: 0.4,
+                 avoidOverlap: 0.5 // Helps prevent node overlap
+             },
+            stabilization: { // Speed up initial stabilization
+                enabled: true,
+                iterations: 1000, // Default is 1000
+                updateInterval: 50,
+                onlyDynamicEdges: false,
+                fit: true
+            }
+          },
+          interaction: {
+            hover: true, // Show hover effects
+            tooltipDelay: 200, // Delay for tooltips
+            navigationButtons: true, // Add zoom/pan buttons
+            keyboard: true // Enable keyboard navigation
+          },
+          groups: { // Define styles for groups if needed
+            HighLevelConcept: { color: { background: '#e6f7ff', border: '#91d5ff' }, shape: 'ellipse' },
+            Category: { color: { background: '#f0f0f0', border: '#cccccc' }, shape: 'box', font: { multi: 'html', bold: true } },
+             // You can add styles for each specific category group here if desired
+             // e.g., "Polyoxovanadate (POV)": { color: { background: categoryColors["Polyoxovanadate (POV)"], border: ... } }
+          }
+        };
+
+        // Initialize the network
+        const network = new vis.Network(networkContainer, data, options);
+
+         // Optional: Fit the network to view after stabilization
+         network.once("stabilizationIterationsDone", function () {
+             network.fit({ animation: true });
+         });
+
+      } catch (error) {
+        console.error("Error initializing Vis.js network:", error);
+        networkContainer.textContent = "Error loading graph. Check console for details.";
+      }
+    } else {
+        console.error("Element with ID 'network' not found.");
+    }
+
+  </script>
+</body>
+</html>
+
