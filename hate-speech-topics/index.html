@@ -189,10 +189,131 @@ header.pg button:hover { color: var(--ink-1); border-color: var(--ink-3); }
 
 footer.pg { color: var(--ink-3); font-size: 11px; text-align: center; margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--border); }
 footer.pg code { background: var(--surface-2); padding: 1px 5px; border-radius: 3px; }
+
+/* ─── Paper hero (research landing above the dashboard) ─────────── */
+.paper-hero { text-align: center; padding: 20px 0 32px; border-bottom: 1px solid var(--border); margin-bottom: 32px; }
+.paper-hero .badge { display: inline-block; padding: 4px 12px; border: 1px solid var(--border); border-radius: 999px; font-size: 11px; color: var(--ink-2); margin-bottom: 16px; letter-spacing: 0.02em; }
+.paper-title { font-size: 32px; font-weight: 700; line-height: 1.15; letter-spacing: -0.025em; margin: 0 0 6px; color: var(--ink-1); }
+@media (max-width: 720px) { .paper-title { font-size: 22px; } }
+.paper-subtitle { font-size: 17px; color: var(--ink-2); margin: 0 0 20px; font-weight: 400; }
+.paper-hero .authors { font-size: 14px; color: var(--ink-1); margin: 0 0 4px; }
+.paper-hero .authors sup { color: var(--ink-3); font-weight: 500; }
+.paper-hero .affiliations { font-size: 12px; color: var(--ink-3); margin: 0 auto 24px; max-width: 760px; line-height: 1.55; }
+.paper-hero .paper-buttons { display: inline-flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-bottom: 24px; }
+.paper-hero .paper-buttons a { padding: 8px 18px; border: 1px solid var(--border); border-radius: 8px; font-size: 13px; color: var(--ink-1); text-decoration: none; font-weight: 500; transition: all 0.08s; background: transparent; font-family: inherit; }
+.paper-hero .paper-buttons a:hover { border-color: var(--accent); color: var(--accent); }
+.paper-hero .paper-buttons a.btn-primary { background: var(--accent); color: var(--surface); border-color: var(--accent); }
+.paper-hero .paper-buttons a.btn-primary:hover { background: var(--seq-500); border-color: var(--seq-500); color: var(--surface); }
+.paper-hero .paper-buttons a.btn-muted { color: var(--ink-3); }
+.paper-hero .stat-line { display: inline-flex; gap: 22px; justify-content: center; flex-wrap: wrap; color: var(--ink-2); font-size: 13px; }
+.paper-hero .stat-line strong { color: var(--ink-1); font-variant-numeric: tabular-nums; font-weight: 600; }
+
+.paper-section { max-width: 780px; margin: 0 auto 28px; padding: 0 4px; }
+.paper-section h2 { font-size: 15px; font-weight: 600; color: var(--ink-1); margin: 0 0 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border); letter-spacing: 0.01em; text-transform: uppercase; }
+.paper-section p { font-size: 15px; line-height: 1.65; color: var(--ink-1); margin: 0 0 12px; }
+.paper-section p em { color: var(--ink-2); font-style: normal; }
+.paper-section ul { padding-left: 20px; margin: 0 0 12px; }
+.paper-section li { font-size: 15px; line-height: 1.6; color: var(--ink-1); margin-bottom: 6px; }
+.paper-section li strong { font-weight: 600; }
+.paper-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+@media (max-width: 720px) { .paper-cols { grid-template-columns: 1fr; gap: 8px; } }
+.paper-cite pre { background: var(--surface-2); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; font-family: ui-monospace, "SF Mono", "Menlo", monospace; font-size: 12px; line-height: 1.55; color: var(--ink-1); overflow-x: auto; white-space: pre; margin: 0; }
+.paper-cite .copy-cite { float: right; background: transparent; border: 1px solid var(--border); color: var(--ink-3); padding: 3px 10px; border-radius: 4px; font-family: inherit; font-size: 11px; cursor: pointer; margin-top: -4px; }
+.paper-cite .copy-cite:hover { color: var(--ink-1); border-color: var(--ink-3); }
+
+.section-divider { border: none; height: 1px; background: var(--border); margin: 48px 0 32px; }
+.dashboard-lead { text-align: center; margin-bottom: 20px; }
+.dashboard-lead h2 { font-size: 22px; font-weight: 700; margin: 0 0 6px; letter-spacing: -0.015em; }
+.dashboard-lead p { color: var(--ink-2); font-size: 14px; margin: 0; }
 </style>
 </head>
 <body>
 <div class="wrap">
+
+  <!-- ─── Paper landing ─────────────────────────────────────────── -->
+  <section class="paper-hero">
+    <div class="badge">Frontiers in Communication · under review · 2026</div>
+    <h1 class="paper-title">LLM-driven Topic Modelling of 80 Years of Hate Speech Research</h1>
+    <p class="paper-subtitle">An Interdisciplinary Perspective</p>
+    <div class="authors">
+      Boshko Koloski<sup>1,2,*</sup>&nbsp;·&nbsp;
+      Ana Frank<sup>3</sup>&nbsp;·&nbsp;
+      Senja Pollak<sup>1</sup>&nbsp;·&nbsp;
+      Veronika Bajt<sup>3</sup>
+    </div>
+    <div class="affiliations">
+      <sup>1</sup>&nbsp;Jožef Stefan Institute, Ljubljana&nbsp;·&nbsp;
+      <sup>2</sup>&nbsp;Jožef Stefan International Postgraduate School&nbsp;·&nbsp;
+      <sup>3</sup>&nbsp;Peace Institute, Ljubljana&nbsp;·&nbsp;
+      <sup>*</sup>&nbsp;<a href="mailto:boshko.koloski@ijs.si" style="color: inherit;">boshko.koloski@ijs.si</a>
+    </div>
+    <div class="paper-buttons">
+      <a href="#dashboard" class="btn-primary">Explore dashboard ↓</a>
+      <a href="#abstract">Abstract</a>
+      <a href="#cite">Cite</a>
+      <a href="https://github.com/bkolosk1" target="_blank" rel="noopener">Code</a>
+      <a href="#" class="btn-muted" aria-disabled="true" title="DOI to be assigned on acceptance">Paper (soon)</a>
+    </div>
+    <div class="stat-line">
+      <span><strong>21,759</strong> articles</span>
+      <span><strong>1944 – 2023</strong> · 80 years</span>
+      <span><strong>~30</strong> topic clusters</span>
+      <span><strong>NUK</strong> database</span>
+    </div>
+  </section>
+
+  <section class="paper-section" id="abstract">
+    <h2>Abstract</h2>
+    <p>The proliferation of hate speech, which is communication that degrades or attacks individuals or groups based on attributes such as ethnicity, gender, religion, or sexual orientation, poses severe global challenges. Its extensive presence online complicates efforts to maintain societal cohesion and protect individual well-being.</p>
+    <p>This paper reviews hate speech research from a computational social science perspective, analysing a large dataset of 21,759 scientific articles spanning 1944–2023. By uncovering trends and dynamics in this field, we highlight the necessity of a multidisciplinary approach that blends social science with computational techniques. Utilising the BERTopic framework for neural topic modelling, we chart the historical progression of hate speech research, expose critical theoretical frameworks, and demonstrate the effectiveness of computational methods in enhancing our comprehension of hate speech.</p>
+    <p>Our work leverages topic modelling and large language models to analyse 80 years of scholarly articles in the Central-Eastern European NUK database. We show that the scientific production on hate speech can be categorised within approximately 30 topics and is growing exponentially. We identify topic-specific trends, such as the rise of hate speech detection using deep learning after 2020 and the exponential growth of specific-target hate speech topics.</p>
+  </section>
+
+  <section class="paper-section" id="overview">
+    <h2>Overview</h2>
+    <p>Scholars from various disciplines are increasingly intrigued by the phenomenon of hate speech — its origins, manifestations, impacts, and potential mitigation — yet it continues to proliferate, facilitated by the rapid expansion of digital communication platforms and social media. Existing surveys suggest that qualitative and quantitative approaches are almost equally represented in the field, with only about 13% mixed-methods studies (Matamoros-Fernández and Farkas, 2021).</p>
+    <p>We argue that a <strong>multidisciplinary approach — combining social science with computational analysis</strong> — is essential for addressing the complex socio-technical challenges posed by hate speech in the digital age. Applying computational tools to large-scale datasets across decades of scholarship, we uncover patterns, trends, and dynamics that have been under-explored, and we surface the pitfalls of hate-speech research based solely on computational science.</p>
+    <p>The body of literature we analyse reflects evolving societal attitudes, technological advancements, and methodological innovations. The field grew from roughly ten journal articles per year in the 1980s to hundreds after 2001, exceeded 1,000 in 2017, and peaked at <strong>2,983 articles in 2021</strong>.</p>
+  </section>
+
+  <section class="paper-section">
+    <div class="paper-cols">
+      <div>
+        <h2>What we did</h2>
+        <ul>
+          <li>Assembled <strong>21,759 English-language scholarly records</strong> from the NUK Mega iskalnik database, 1944 – 2023.</li>
+          <li>Applied <strong>BERTopic</strong> — Sentence-Transformer embeddings, UMAP, HDBSCAN — over titles and abstracts.</li>
+          <li>Used <strong>Llama 2</strong> to generate interpretable natural-language labels for the resulting 30 topic clusters (AHAM pipeline).</li>
+          <li>Computed <strong>temporal trajectories</strong> per topic and <strong>pairwise Pearson correlations</strong> over yearly counts.</li>
+        </ul>
+      </div>
+      <div>
+        <h2>Key findings</h2>
+        <ul>
+          <li><strong>Exponential growth</strong> — ~10/year in the 1980s → 125 in 1997 → 1,108 in 2017 → peak of 2,983 in 2021.</li>
+          <li><strong>Shift after 2020</strong> toward deep-learning-based hate-speech detection as a dominant computational cluster.</li>
+          <li><strong>Interdisciplinary and migrating</strong> — legal, sociological, psychological, communication, and computer-science contributions co-exist and reshape each other across the 80-year window.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="paper-section paper-cite" id="cite">
+    <h2>Cite <button class="copy-cite" id="copy-cite-btn" type="button">Copy BibTeX</button></h2>
+    <pre id="bibtex-block"><code>@article{koloski2026hate,
+  title   = {LLM-driven Topic Modelling of 80 Years of Hate Speech Research: An Interdisciplinary Perspective},
+  author  = {Koloski, Boshko and Frank, Ana and Pollak, Senja and Bajt, Veronika},
+  journal = {Frontiers in Communication},
+  note    = {Under review},
+  year    = {2026}
+}</code></pre>
+  </section>
+
+  <hr class="section-divider" />
+  <div class="dashboard-lead" id="dashboard">
+    <h2>Interactive Topic Landscape</h2>
+    <p>Click any topic for the deep dive — sparklines, decade breakdown, keyword search, correlation map, comparison mode.</p>
+  </div>
 
   <header class="pg">
     <div>
@@ -803,6 +924,15 @@ function init() {
       $("#copy-share-status").textContent = " · copied!";
       setTimeout(() => { $("#copy-share-status").textContent = ""; }, 2000);
     }).catch(() => { $("#copy-share-status").textContent = " · (copy failed)"; });
+  };
+  const copyCiteBtn = $("#copy-cite-btn");
+  if (copyCiteBtn) copyCiteBtn.onclick = () => {
+    const t = $("#bibtex-block").innerText;
+    navigator.clipboard.writeText(t).then(() => {
+      const orig = copyCiteBtn.textContent;
+      copyCiteBtn.textContent = "Copied!";
+      setTimeout(() => { copyCiteBtn.textContent = orig; }, 1500);
+    });
   };
   ["cluster", "size", "alpha"].forEach((o) => {
     $("#order-" + o).onclick = () => {
