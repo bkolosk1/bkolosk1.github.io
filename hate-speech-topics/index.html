@@ -1,0 +1,831 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Hate Speech Research — Topic Landscape 1944–2023</title>
+<style>
+:root {
+  color-scheme: light dark;
+  --surface: #fcfcfb; --page: #f9f9f7; --surface-2: #f4f3ef;
+  --ink-1: #0b0b0b; --ink-2: #52514e; --ink-3: #898781;
+  --grid: #e1e0d9; --baseline: #c3c2b7; --border: rgba(11,11,11,0.10);
+  --seq-100: #cde2fb; --seq-200: #9ec5f4; --seq-300: #6da7ec; --seq-400: #3987e5; --seq-500: #256abf; --seq-600: #184f95; --seq-700: #0d366b;
+  --accent: #256abf; --accent-2: #eb6834; --accent-fill: #cde2fb; --accent-2-fill: #fbe3d5;
+  --pos: #256abf; --neg: #d03b3b;
+  --good: #006300;
+  --shadow: 0 2px 8px rgba(0,0,0,0.06);
+  --shadow-lg: 0 12px 40px rgba(0,0,0,0.16);
+}
+@media (prefers-color-scheme: dark) { :root:where(:not([data-theme="light"])) {
+  --surface: #1a1a19; --page: #0d0d0d; --surface-2: #232322;
+  --ink-1: #ffffff; --ink-2: #c3c2b7; --ink-3: #898781;
+  --grid: #2c2c2a; --baseline: #383835; --border: rgba(255,255,255,0.10);
+  --seq-100: #0d366b; --seq-200: #104281; --seq-300: #184f95; --seq-400: #256abf; --seq-500: #3987e5; --seq-600: #86b6ef; --seq-700: #cde2fb;
+  --accent: #3987e5; --accent-2: #d95926; --accent-fill: #184f95; --accent-2-fill: #4a1d0a;
+  --pos: #3987e5; --neg: #e66767;
+  --good: #0ca30c;
+  --shadow: 0 2px 12px rgba(0,0,0,0.5);
+  --shadow-lg: 0 12px 40px rgba(0,0,0,0.7);
+} }
+:root[data-theme="dark"] {
+  --surface: #1a1a19; --page: #0d0d0d; --surface-2: #232322;
+  --ink-1: #ffffff; --ink-2: #c3c2b7; --ink-3: #898781;
+  --grid: #2c2c2a; --baseline: #383835; --border: rgba(255,255,255,0.10);
+  --seq-100: #0d366b; --seq-200: #104281; --seq-300: #184f95; --seq-400: #256abf; --seq-500: #3987e5; --seq-600: #86b6ef; --seq-700: #cde2fb;
+  --accent: #3987e5; --accent-2: #d95926; --accent-fill: #184f95; --accent-2-fill: #4a1d0a;
+  --pos: #3987e5; --neg: #e66767;
+  --good: #0ca30c;
+  --shadow: 0 2px 12px rgba(0,0,0,0.5);
+  --shadow-lg: 0 12px 40px rgba(0,0,0,0.7);
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--page); color: var(--ink-1); font-family: system-ui, -apple-system, "Segoe UI", sans-serif; font-size: 14px; line-height: 1.4; -webkit-font-smoothing: antialiased; }
+.wrap { max-width: 1320px; margin: 0 auto; padding: 32px 24px 64px; }
+
+/* ─── Header ────────────────────────────────────────────────────── */
+header.pg { display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: end; padding-bottom: 18px; border-bottom: 1px solid var(--border); }
+header.pg h1 { font-size: 24px; font-weight: 700; margin: 0 0 4px; letter-spacing: -0.015em; }
+header.pg .sub { color: var(--ink-2); font-size: 13px; margin: 0; }
+header.pg .cite { color: var(--ink-3); font-size: 12px; margin: 6px 0 0; }
+header.pg .toolbar { display: flex; gap: 8px; }
+header.pg button { background: transparent; border: 1px solid var(--border); color: var(--ink-2); padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; font-family: inherit; }
+header.pg button:hover { color: var(--ink-1); border-color: var(--ink-3); }
+
+/* ─── Stat tiles ─────────────────────────────────────────────────── */
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 20px 0 16px; }
+.stat { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; transition: border-color 0.1s; }
+.stat.click { cursor: pointer; }
+.stat.click:hover { border-color: var(--accent); }
+.stat .n { font-size: 28px; font-weight: 600; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.stat .lbl { color: var(--ink-2); font-size: 12px; margin-top: 2px; }
+.stat .sub { color: var(--ink-3); font-size: 11px; margin-top: 2px; }
+
+/* ─── Decade chips ───────────────────────────────────────────────── */
+.decades { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 12px; align-items: center; }
+.decades .lab { font-size: 12px; color: var(--ink-2); margin-right: 6px; }
+.decade { background: transparent; border: 1px solid var(--border); color: var(--ink-2); padding: 5px 10px; border-radius: 999px; cursor: pointer; font-size: 12px; font-family: inherit; font-variant-numeric: tabular-nums; transition: all 0.08s; }
+.decade:hover { color: var(--ink-1); border-color: var(--ink-3); }
+.decade.active { color: var(--surface); background: var(--accent); border-color: var(--accent); }
+
+/* ─── Filters ────────────────────────────────────────────────────── */
+.filters { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; padding: 12px 16px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 20px; }
+.filters label { color: var(--ink-2); font-size: 12px; }
+.filters input[type="search"], .filters input[type="number"] { padding: 6px 10px; border: 1px solid var(--border); border-radius: 6px; background: transparent; color: var(--ink-1); font-family: inherit; font-size: 13px; }
+.filters input[type="search"] { min-width: 240px; }
+.filters input[type="number"] { width: 74px; font-variant-numeric: tabular-nums; }
+.filters input:focus { outline: none; border-color: var(--accent); }
+.filters .toggle { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; user-select: none; }
+.filters .toggle input { accent-color: var(--accent); }
+.filters .spacer { flex: 1; }
+.filters .clear { background: transparent; border: 1px solid var(--border); color: var(--ink-2); padding: 6px 10px; border-radius: 6px; cursor: pointer; font-size: 12px; font-family: inherit; }
+.filters .clear:hover { color: var(--ink-1); border-color: var(--ink-3); }
+.filters .kbd { display: inline-flex; align-items: center; padding: 2px 6px; border: 1px solid var(--border); border-bottom-width: 2px; border-radius: 3px; font-family: ui-monospace, "SF Mono", "Menlo", monospace; font-size: 10px; color: var(--ink-3); background: var(--surface-2); }
+
+/* ─── Cards ──────────────────────────────────────────────────────── */
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 18px 20px; overflow: hidden; }
+.card h2 { font-size: 14px; font-weight: 600; margin: 0 0 2px; letter-spacing: 0; }
+.card .h-sub { color: var(--ink-3); font-size: 12px; margin: 0 0 14px; }
+.card .header-row { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.card .header-row .actions { display: flex; gap: 6px; }
+.card .header-row .actions button { background: transparent; border: 1px solid var(--border); color: var(--ink-2); padding: 3px 8px; border-radius: 4px; font-family: inherit; font-size: 11px; cursor: pointer; }
+.card .header-row .actions button:hover { color: var(--ink-1); border-color: var(--ink-3); }
+.card .header-row .actions button.on { color: var(--surface); background: var(--accent); border-color: var(--accent); }
+
+.grid-2 { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 20px; margin-bottom: 20px; }
+@media (max-width: 1000px) { .grid-2 { grid-template-columns: minmax(0,1fr); } .stats { grid-template-columns: repeat(2, 1fr); } }
+
+/* ─── Growth curve ───────────────────────────────────────────────── */
+#growth svg { display: block; width: 100%; height: 240px; }
+#growth .grid { stroke: var(--grid); stroke-width: 1; }
+#growth .axis { stroke: var(--baseline); stroke-width: 1; }
+#growth .tick { fill: var(--ink-3); font-size: 10px; font-variant-numeric: tabular-nums; }
+#growth .area { fill: var(--accent-fill); opacity: 0.55; }
+#growth .area2 { fill: var(--accent-2-fill); opacity: 0.5; }
+#growth .line { fill: none; stroke: var(--accent); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+#growth .line2 { fill: none; stroke: var(--accent-2); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+#growth .peak-line { stroke: var(--accent); stroke-width: 1; stroke-dasharray: 3 3; }
+#growth .peak-lbl { fill: var(--ink-1); font-size: 11px; font-weight: 600; }
+#growth .peak-sub { fill: var(--ink-3); font-size: 10px; }
+#growth .brush-hover { stroke: var(--ink-3); stroke-dasharray: 2 3; stroke-width: 1; }
+#growth-tt { position: absolute; pointer-events: none; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 6px 10px; font-size: 12px; color: var(--ink-1); box-shadow: var(--shadow); opacity: 0; transform: translate(-50%, -110%); transition: opacity 0.08s; z-index: 5; }
+#growth-wrap { position: relative; }
+
+/* ─── Topic list ─────────────────────────────────────────────────── */
+#topics-list { display: grid; grid-template-columns: minmax(0,1fr); gap: 4px; max-height: 720px; overflow-y: auto; padding-right: 6px; }
+.topic-row { display: grid; grid-template-columns: 34px minmax(0,1.3fr) minmax(0,1.5fr) 92px 82px; gap: 12px; align-items: center; padding: 8px 10px; border-radius: 6px; border: 1px solid transparent; cursor: pointer; transition: background 0.05s, border-color 0.05s; }
+.topic-row:hover { background: color-mix(in oklab, var(--accent) 8%, transparent); border-color: var(--border); }
+.topic-row.active { background: color-mix(in oklab, var(--accent) 15%, transparent); border-color: var(--accent); }
+.topic-row.compare-target { background: color-mix(in oklab, var(--accent-2) 15%, transparent); border-color: var(--accent-2); }
+.topic-row.outlier { opacity: 0.55; }
+.topic-row .rank { font-variant-numeric: tabular-nums; color: var(--ink-3); font-size: 12px; text-align: right; }
+.topic-row .label { color: var(--ink-1); font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.topic-row .kw { color: var(--ink-2); font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.topic-row .n { font-variant-numeric: tabular-nums; color: var(--ink-1); font-size: 12px; text-align: right; }
+.topic-row .n-bar { display: block; height: 3px; background: var(--seq-400); border-radius: 2px; margin-top: 3px; }
+.topic-row .spark svg { display: block; width: 76px; height: 22px; }
+.topic-row .spark .line { fill: none; stroke: var(--accent); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.topic-row .spark .fill { fill: var(--accent-fill); opacity: 0.5; }
+
+/* ─── Heatmap ────────────────────────────────────────────────────── */
+#heatmap-wrap { overflow: auto; max-height: 720px; }
+#heatmap { display: block; cursor: crosshair; }
+#heatmap rect { stroke: var(--surface); stroke-width: 1; transition: stroke 0.05s; }
+#heatmap rect:hover { stroke: var(--ink-1); stroke-width: 2; }
+#heatmap .rowlbl, #heatmap .collbl { font-size: 10px; fill: var(--ink-2); font-variant-numeric: tabular-nums; }
+#heatmap .lbl-hover { fill: var(--ink-1); font-weight: 600; }
+#heatmap-tt { position: absolute; pointer-events: none; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; font-size: 12px; color: var(--ink-1); box-shadow: var(--shadow); opacity: 0; max-width: 260px; z-index: 10; transform: translate(-50%, -110%); }
+#heatmap-outer { position: relative; }
+.legend { display: flex; align-items: center; gap: 12px; margin-top: 12px; font-size: 11px; color: var(--ink-3); }
+.legend .bar { display: inline-block; height: 8px; width: 140px; border-radius: 2px; background: linear-gradient(to right, var(--neg), var(--grid), var(--pos)); }
+.order-toggle { display: inline-flex; gap: 4px; }
+.order-toggle button { background: transparent; border: 1px solid var(--border); color: var(--ink-3); padding: 3px 8px; border-radius: 4px; font-family: inherit; font-size: 11px; cursor: pointer; }
+.order-toggle button.on { color: var(--surface); background: var(--accent); border-color: var(--accent); }
+
+/* ─── Modal ──────────────────────────────────────────────────────── */
+.modal-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.4); display: none; align-items: flex-start; justify-content: center; z-index: 100; padding: 40px 20px; overflow: auto; }
+.modal-backdrop.show { display: flex; animation: fadeIn 0.12s ease-out; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.modal { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; width: 100%; max-width: 900px; box-shadow: var(--shadow-lg); overflow: hidden; }
+.modal header { display: flex; align-items: flex-start; justify-content: space-between; padding: 20px 24px 12px; border-bottom: 1px solid var(--border); gap: 16px; }
+.modal header h3 { font-size: 18px; margin: 0 0 4px; font-weight: 600; letter-spacing: -0.01em; }
+.modal header .stats-row { display: flex; gap: 16px; margin-top: 6px; }
+.modal header .stats-row .s { font-size: 12px; color: var(--ink-2); }
+.modal header .stats-row .s strong { color: var(--ink-1); font-variant-numeric: tabular-nums; }
+.modal header .actions { display: flex; gap: 6px; align-items: center; }
+.modal header .actions button { background: transparent; border: 1px solid var(--border); color: var(--ink-2); padding: 5px 12px; border-radius: 6px; font-family: inherit; font-size: 12px; cursor: pointer; }
+.modal header .actions button:hover { color: var(--ink-1); border-color: var(--ink-3); }
+.modal header .actions .primary { background: var(--accent); color: var(--surface); border-color: var(--accent); }
+.modal header .actions .primary:hover { background: var(--seq-500); border-color: var(--seq-500); }
+.modal header .close { background: transparent; border: none; color: var(--ink-3); padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 20px; line-height: 1; }
+.modal header .close:hover { color: var(--ink-1); background: var(--surface-2); }
+.modal .body { padding: 20px 24px; display: grid; grid-template-columns: 2fr 1fr; gap: 24px; }
+@media (max-width: 720px) { .modal .body { grid-template-columns: 1fr; } }
+.modal .body h4 { font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-3); font-weight: 600; margin: 0 0 8px; }
+.modal .decade-bars { display: grid; grid-template-columns: repeat(9, 1fr); gap: 6px; margin-top: 10px; }
+.modal .decade-bars .db { display: flex; flex-direction: column; align-items: center; }
+.modal .decade-bars .db .bar-wrap { height: 120px; display: flex; flex-direction: column; justify-content: flex-end; width: 100%; gap: 2px; }
+.modal .decade-bars .db .bar-a { width: 100%; background: var(--accent); border-radius: 3px 3px 0 0; transition: height 0.15s; }
+.modal .decade-bars .db .bar-b { width: 100%; background: var(--accent-2); border-radius: 3px 3px 0 0; transition: height 0.15s; }
+.modal .decade-bars .db .lbl { font-size: 11px; color: var(--ink-2); font-variant-numeric: tabular-nums; margin-top: 6px; font-weight: 500; }
+.modal .decade-bars .db .n { font-size: 10px; color: var(--ink-3); font-variant-numeric: tabular-nums; margin-top: 1px; }
+.modal .kw-list { display: flex; flex-wrap: wrap; gap: 6px; }
+.modal .kw-list .k { padding: 4px 8px; background: var(--surface-2); border: 1px solid var(--border); border-radius: 4px; font-size: 12px; color: var(--ink-1); cursor: pointer; transition: all 0.08s; }
+.modal .kw-list .k:hover { border-color: var(--accent); color: var(--accent); }
+.modal .peers { display: grid; grid-template-columns: 1fr; gap: 4px; max-height: 300px; overflow-y: auto; }
+.modal .peer { display: grid; grid-template-columns: 1fr 70px 44px; gap: 8px; align-items: center; padding: 6px 8px; border-radius: 4px; cursor: pointer; transition: background 0.05s; }
+.modal .peer:hover { background: var(--surface-2); }
+.modal .peer .p-lbl { font-size: 12px; color: var(--ink-1); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.modal .peer .p-bar { height: 6px; background: var(--grid); border-radius: 3px; overflow: hidden; }
+.modal .peer .p-bar .fill { height: 100%; background: var(--accent); border-radius: 3px; }
+.modal .peer .p-r { font-size: 11px; color: var(--ink-2); font-variant-numeric: tabular-nums; text-align: right; }
+.modal .compare-legend { display: flex; gap: 12px; font-size: 11px; color: var(--ink-2); margin-top: 6px; }
+.modal .compare-legend .swatch { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 4px; vertical-align: middle; }
+
+.compare-banner { padding: 12px 16px; background: color-mix(in oklab, var(--accent-2) 8%, transparent); border: 1px solid var(--accent-2); border-radius: 8px; margin-bottom: 12px; font-size: 13px; color: var(--ink-1); display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.compare-banner strong { color: var(--accent-2); }
+.compare-banner button { background: transparent; border: 1px solid var(--accent-2); color: var(--accent-2); padding: 4px 10px; border-radius: 4px; font-family: inherit; font-size: 12px; cursor: pointer; }
+.compare-banner button:hover { background: var(--accent-2); color: var(--surface); }
+
+footer.pg { color: var(--ink-3); font-size: 11px; text-align: center; margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--border); }
+footer.pg code { background: var(--surface-2); padding: 1px 5px; border-radius: 3px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="pg">
+    <div>
+      <h1>Hate Speech Research — Topic Landscape 1944 – 2023</h1>
+      <p class="sub">LLM-driven diachronic mapping of 21,759 scholarly records from the NUK database. Click anything.</p>
+      <p class="cite">Koloski, Frank, Pollak, Bajt · BERTopic + Llama 2 · <a href="#" id="copy-share" style="color: inherit;">copy shareable link</a> <span id="copy-share-status" style="color: var(--good);"></span></p>
+    </div>
+    <div class="toolbar">
+      <button id="theme-toggle" type="button">Toggle theme</button>
+    </div>
+  </header>
+
+  <section class="stats" id="stats"></section>
+
+  <div class="decades" id="decades">
+    <span class="lab">Jump to era:</span>
+  </div>
+
+  <section class="filters" role="toolbar" aria-label="Dashboard filters">
+    <label for="search">Search:</label>
+    <input id="search" type="search" placeholder="topic or keyword — e.g. bullying, migration, algorithm" autocomplete="off" />
+    <label class="toggle"><input id="hide-outlier" type="checkbox" checked /> hide outlier (−1)</label>
+    <label class="toggle"><input id="scale-log" type="checkbox" /> log growth</label>
+    <span class="spacer"></span>
+    <label class="toggle">years: <input id="y0" type="number" /> – <input id="y1" type="number" /></label>
+    <button class="clear" id="clear-filters" type="button">Clear <span class="kbd">esc</span></button>
+  </section>
+
+  <div id="compare-banner" class="compare-banner" style="display: none;">
+    <span>Compare mode. Click a second topic to overlay its curve on the first (<strong id="cb-first"></strong>).</span>
+    <button id="cb-cancel" type="button">Cancel</button>
+  </div>
+
+  <div class="card" id="growth">
+    <div class="header-row">
+      <div>
+        <h2>Corpus growth</h2>
+        <p class="h-sub">Records per publication year. Hover any point. Click a year to filter to that decade.</p>
+      </div>
+    </div>
+    <div id="growth-wrap">
+      <svg viewBox="0 0 900 240" preserveAspectRatio="none" role="img" aria-label="Publications per year growth curve"></svg>
+      <div id="growth-tt"></div>
+    </div>
+  </div>
+
+  <div class="grid-2" style="margin-top: 20px;">
+    <div class="card" id="topics-card">
+      <div class="header-row">
+        <div>
+          <h2>Topics</h2>
+          <p class="h-sub" id="topics-sub"></p>
+        </div>
+      </div>
+      <div id="topics-list" role="list"></div>
+    </div>
+
+    <div class="card" id="corr-card">
+      <div class="header-row">
+        <div>
+          <h2>Topic co-occurrence over time</h2>
+          <p class="h-sub">Pearson correlation on yearly counts. Reorder to reveal structural clusters.</p>
+        </div>
+        <div class="actions order-toggle">
+          <button id="order-cluster" class="on" type="button">by cluster</button>
+          <button id="order-size" type="button">by size</button>
+          <button id="order-alpha" type="button">a–z</button>
+        </div>
+      </div>
+      <div id="heatmap-outer">
+        <div id="heatmap-wrap"><svg id="heatmap" role="img" aria-label="Topic-topic correlation heatmap"></svg></div>
+        <div id="heatmap-tt"></div>
+      </div>
+      <div class="legend"><span>−1</span><span class="bar"></span><span>+1</span><span style="margin-left: auto; color: var(--ink-3); font-size: 11px;">Click a cell to open both topics for comparison.</span></div>
+    </div>
+  </div>
+
+  <footer class="pg">
+    Data: <code>data/derived_shareable/</code>. Generated by <code>build_dashboard.py</code>. Palette + interaction from the dataviz reference.
+  </footer>
+</div>
+
+<!-- Modal -->
+<div class="modal-backdrop" id="modal-back" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div class="modal" id="modal">
+    <header>
+      <div>
+        <h3 id="modal-title"></h3>
+        <div class="stats-row" id="modal-stats"></div>
+      </div>
+      <div class="actions">
+        <button id="modal-compare" type="button">Compare with…</button>
+        <button class="close" id="modal-close" type="button" aria-label="Close">×</button>
+      </div>
+    </header>
+    <div class="body">
+      <div>
+        <h4>Records per decade</h4>
+        <div class="compare-legend" id="modal-legend" style="display: none;"></div>
+        <div class="decade-bars" id="modal-decades"></div>
+        <h4 style="margin-top: 20px;">Keywords <span style="color: var(--ink-3); font-weight: 400; text-transform: none; letter-spacing: 0;">(click to search the whole dashboard)</span></h4>
+        <div class="kw-list" id="modal-kws"></div>
+      </div>
+      <div>
+        <h4>Most correlated topics</h4>
+        <div class="peers" id="modal-peers"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+"use strict";
+const DATA = {"meta":{"total_records":21759,"year_min":1944,"year_max":2024,"year_range":[1944,1945,1946,1947,1948,1949,1950,1951,1952,1953,1954,1955,1956,1957,1958,1959,1960,1961,1962,1963,1964,1965,1966,1967,1968,1969,1970,1971,1972,1973,1974,1975,1976,1977,1978,1979,1980,1981,1982,1983,1984,1985,1986,1987,1988,1989,1990,1991,1992,1993,1994,1995,1996,1997,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024],"n_topics_all":30,"n_topics_content":29,"cluster_order":[21,1,3,13,17,14,19,0,10,25,4,2,11,5,7,12,9,24,18,8,22,20,16,6,15,27,23,26,28,-1],"corpus_peak_year":2021,"corpus_peak_value":2983},"topics":[{"id":-1,"label":"Social Media and Political Discourse","n":9858,"keybert":["discourse","social","speech","hate","political","media","violence","freedom"],"series":[1,0,1,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,8,29,24,51,36,49,67,65,71,79,89,106,99,111,120,152,150,144,193,219,241,262,294,365,430,447,498,680,772,1014,1274,1214,491,4],"peak_year":2021,"peak_value":1274},{"id":0,"label":"Hate Speech Detection Using Deep Learning","n":1522,"keybert":["cyberbullying","tweets","twitter","neural","hate","speech","sentiment","networks"],"series":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,1,3,1,1,3,2,8,21,20,46,67,178,307,552,310,0],"peak_year":2022,"peak_value":552},{"id":1,"label":"Hate Speech and Online Expression","n":1034,"keybert":["hatred","speech","hate","violence","discrimination","freedom","political","against"],"series":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,8,11,8,13,11,10,4,4,16,11,21,21,11,7,7,8,12,16,21,14,26,26,18,49,38,44,55,68,78,87,132,121,58,0],"peak_year":2021,"peak_value":132},{"id":2,"label":"Migration and Integration in Europe","n":1002,"keybert":["refugees","refugee","migrants","multiculturalism","asylum","ethnic","migration","ukrainian"],"series":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,3,0,0,4,6,4,2,5,7,10,6,6,11,15,10,10,22,25,17,25,62,64,60,73,79,110,113,128,102,22,0],"peak_year":2021,"peak_value":128},{"id":3,"label":"Regulation of Digital Technology","n":821,"keybert":["regulation","governance","privacy","regulatory","intermediaries","facebook","cyberspace","internet"],"series":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,4,0,4,4,6,10,6,15,11,8,9,13,12,10,5,10,21,10,22,23,13,28,34,63,87,111,122,119,39,0],"peak_year":2021,"peak_value":122},{"id":4,"label":"Contemporary Issues in Japan and Southeast Asia","n":768,"keybert":["muslims","islam","nationalist","myanmar","nationalism","islamic","rohingya","muslim"],"series":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,2,0,3,1,1,1,3,3,3,8,5,6,6,4,8,8,35,66,41,52,70,83,105,121,95,36,0],"peak_year":2021,"peak_value":121},{"id":5,"label":"Political Communication in Emerging African Democracies","n":690,"keybert":["apartheid","africa","democracy","media","uganda","zimbabwe","african","political"],"series":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,1,2,1,2,3,5,1,5,9,10,7,15,13,24,41,27,38,35,28,42,45,50,53,82,84,48,16,0],"peak_year":2021,"peak_value":84},{"id":6,"label":"Human Rights and International Law","n":612,"keybert":["rights","jurisprudence","genocide","tribunals","humanity","justice","law","judicial"],"series":[0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,5,6,4,10,7,9,15,14,13,23,18,15,24,13,26,22,20,30,32,29,26,37,32,28,30,34,31,34,17,5,0],"peak_year":2015,"peak_value":37},{"id":7,"label":"LGBTQ+ Rights and Visibility","n":550,"keybert":["lgbt","lgbtq","queer","heterosexual","homophobic","sexuality","transgender","homophobia"],"series":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,1,1,3,5,8,8,9,9,9,7,8,15,17,16,18,23,22,17,27,44,34,47,32,48,50,45,25,0],"peak_year":2021,"peak_value":50},{"id":8,"label":"Religious Freedom and Tolerance in the Modern World","n":511,"keybert":["secular","religions","religion","freedom","religious","discrimination","beliefs","rights"],"series":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,2,3,1,2,3,5,6,3,3,4,7,7,16,15,22,12,17,18,30,15,20,28,27,29,36,28,36,23,56,26,9,0],"peak_year":2021,"peak_value":56},{"id":9,"label":"Campus Free Speech Controversies","n":481,"keybert":["campuses","campus","universities","students","university","speech","academic","freedom"],"series":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,5,8,6,4,8,2,10,7,5,9,7,6,6,5,8,12,7,12,6,15,8,6,8,10,10,19,38,32,41,45,52,47,13,1],"peak_year":2021,"peak_value":52},{"id":10,"label":"Human Rights Violations During COVID-19 Pandemic","n":438,"keybert":["covid","pandemic","coronavirus","outbreak","vaccination","vaccine","vaccines","racism"],"series":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,2,0,1,1,1,0,2,1,4,0,0,6,3,65,158,138,55,0],"peak_year":2021,"peak_value":158},{"id":11,"label":"Islamophobia and Discrimination Against Muslims","n":436,"keybert":["islamophobia","islamic","islam","muslim","muslims","extremism","terrorism","discrimination"],"series":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,2,2,0,2,5,3,1,6,4,6,12,8,6,14,17,15,31,32,26,31,31,39,41,48,40,12,0],"peak_year":2021,"peak_value":48},{"id":12,"label":"Racial Slurs and Online Racism","n":347,"keybert":["racism","racist","derogatory","racial","discourses","discourse","race","rhetoric"],"series":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,3,1,1,4,4,3,5,1,3,4,0,6,3,5,11,6,9,10,13,9,9,14,30,29,35,40,41,36,11,0],"peak_year":2021,"peak_value":41},{"id":13,"label":"Impact of Fake News on Journalism","n":343,"keybert":["journalism","journalistic","journalists","disinformation","media","news","content","misinformation"],"series":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,2,1,0,2,1,2,3,0,3,1,2,4,2,4,7,3,11,16,44,39,48,69,54,23,0],"peak_year":2021,"peak_value":69},{"id":14,"label":"Digital Safety and Wellbeing Among Youth","n":334,"keybert":["cyberbullying","bullying","cyber","literacy","adolescents","internet","cyberhate","educational"],"series":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,0,1,0,2,2,3,0,1,0,2,1,2,2,3,4,3,5,7,4,5,6,13,21,27,47,57,77,35,0],"peak_year":2022,"peak_value":77},{"id":15,"label":"First Amendment and Free Speech","n":300,"keybert":["amendment","constitutional","constitution","freedom","speech","rights","jurisprudence","protections"],"series":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,4,2,5,6,3,8,7,5,5,7,4,4,8,8,9,5,4,5,8,15,9,12,11,14,29,13,17,25,16,17,11,3,0],"peak_year":2016,"peak_value":29},{"id":16,"label":"Contemporary Antisemitism in Europe and the Middle East","n":293,"keybert":["zionism","zionist","semitic","antisemitism","israeli","jewish","palestinians","jews"],"series":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,0,0,3,2,2,1,1,9,4,2,5,7,10,6,14,20,8,13,13,8,11,17,10,20,20,27,20,29,7,0],"peak_year":2022,"peak_value":29},{"id":17,"label":"Hate Speech and Discrimination in Online Media","n":272,"keybert":["comunicación","es","como","spanish","sociales","objetivo","discurso","por"],"series":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,2,3,1,1,0,2,2,1,8,5,6,7,15,15,23,43,58,64,13,0],"peak_year":2022,"peak_value":64},{"id":18,"label":"Journal Publication Details","n":201,"keybert":["journal","cover","front","published","topics","introduction","documents","article"],"series":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,1,1,1,1,3,5,5,4,2,3,2,0,1,2,1,2,2,5,5,4,4,10,13,10,16,25,21,9,25,10,5,0],"peak_year":2018,"peak_value":25},{"id":19,"label":"Responsible AI and Ethics","n":176,"keybert":["ai","intelligence","intelligent","ethical","autonomous","robots","ethics","privacy"],"series":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,2,1,0,2,3,5,6,17,22,41,42,34,0],"peak_year":2022,"peak_value":42},{"id":20,"label":"Tolerance and Hate Speech in South Africa","n":151,"keybert":["het","novinarjev","polje","dutch","zeitschriftenlese","rezensionen","verdraagzaamheid","raziskave"],"series":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,6,0,0,2,3,3,1,0,4,1,5,9,5,11,11,15,6,8,6,12,5,5,19,12,1,0],"peak_year":2021,"peak_value":19},{"id":21,"label":"Football and National Identity","n":137,"keybert":["football","fifa","soccer","sports","esports","sport","athletes","players"],"series":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,2,0,0,1,1,4,3,2,4,3,7,7,6,8,10,16,14,20,21,7,0],"peak_year":2022,"peak_value":21},{"id":22,"label":"Contemporary Art and Music Criticism","n":126,"keybert":["art","artists","artistic","arts","artist","aesthetics","murals","mural"],"series":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,2,1,0,0,3,3,2,2,4,1,2,2,8,10,3,9,7,9,11,4,5,11,14,8,3,0],"peak_year":2021,"peak_value":14},{"id":23,"label":"Controversial Cartoons and Free Speech","n":104,"keybert":["cartoons","cartoonists","satirical","censorship","cartooning","comic","satire","cartoon"],"series":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,1,8,3,6,7,5,3,3,1,2,10,11,4,8,3,2,10,12,3,0],"peak_year":2022,"peak_value":12},{"id":24,"label":"Digitalization and Public Good","n":87,"keybert":["digitalisierung","digitale","digitalen","digitaler","internet","bewegungsforschung","möglichkeiten","kommunikation"],"series":[0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,1,0,1,0,1,0,0,0,1,10,12,11,24,14,5,4,0],"peak_year":2020,"peak_value":24},{"id":25,"label":"Disability and Ableism","n":55,"keybert":["disability","disabilities","impairments","disabled","discrimination","ableism","disablist","ableist"],"series":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,1,0,0,1,0,0,0,0,1,2,2,2,4,10,8,9,8,5,0],"peak_year":2019,"peak_value":10},{"id":26,"label":"Library Neutrality and Diversity","n":47,"keybert":["librarian","librarians","librarianship","library","libraries","freedom","books","intellectual"],"series":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,2,0,1,5,1,2,0,1,0,0,0,0,0,2,2,0,1,1,1,1,5,2,6,2,2,9,0,0],"peak_year":2022,"peak_value":9},{"id":27,"label":"Abortion Rights and Protests","n":33,"keybert":["abortion","abortions","roe","laws","rights","court","parenthood","cases"],"series":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,1,0,0,0,0,1,2,0,0,2,1,1,1,2,3,1,4,0,5,4,0,0,2,1,0],"peak_year":2018,"peak_value":5},{"id":28,"label":"Public Policy and Global Governance","n":30,"keybert":["governance","governments","globalization","democracy","government","poverty","capitalism","biopolitics"],"series":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,2,0,0,1,0,1,0,0,12,7,0,0,1,1,1,1,0,1,0],"peak_year":2014,"peak_value":12}],"yearly":[{"y":1944,"n":1},{"y":1946,"n":1},{"y":1949,"n":1},{"y":1953,"n":2},{"y":1955,"n":1},{"y":1967,"n":1},{"y":1970,"n":1},{"y":1972,"n":1},{"y":1990,"n":7},{"y":1991,"n":24},{"y":1992,"n":60},{"y":1993,"n":46},{"y":1994,"n":91},{"y":1995,"n":84},{"y":1996,"n":76},{"y":1997,"n":125},{"y":1998,"n":125},{"y":1999,"n":150},{"y":2000,"n":165},{"y":2001,"n":181},{"y":2002,"n":213},{"y":2003,"n":206},{"y":2004,"n":208},{"y":2005,"n":233},{"y":2006,"n":307},{"y":2007,"n":296},{"y":2008,"n":311},{"y":2009,"n":378},{"y":2010,"n":444},{"y":2011,"n":528},{"y":2012,"n":520},{"y":2013,"n":587},{"y":2014,"n":788},{"y":2015,"n":888},{"y":2016,"n":972},{"y":2017,"n":1108},{"y":2018,"n":1465},{"y":2019,"n":1703},{"y":2020,"n":2262},{"y":2021,"n":2983},{"y":2022,"n":2964},{"y":2023,"n":1247},{"y":2024,"n":5}],"correlations":[{"a":11,"b":2,"c":0.9781},{"a":4,"b":2,"c":0.9766},{"a":13,"b":3,"c":0.9762},{"a":14,"b":17,"c":0.9733},{"a":21,"b":1,"c":0.9732},{"a":9,"b":12,"c":0.9643},{"a":4,"b":21,"c":0.9632},{"a":14,"b":19,"c":0.9619},{"a":17,"b":3,"c":0.9606},{"a":1,"b":3,"c":0.9581},{"a":21,"b":3,"c":0.9569},{"a":21,"b":2,"c":0.9562},{"a":0,"b":19,"c":0.9562},{"a":2,"b":12,"c":0.9542},{"a":4,"b":1,"c":0.9516},{"a":25,"b":3,"c":0.95},{"a":1,"b":13,"c":0.9486},{"a":11,"b":5,"c":0.9473},{"a":14,"b":0,"c":0.9469},{"a":4,"b":11,"c":0.9468},{"a":21,"b":12,"c":0.9463},{"a":12,"b":3,"c":0.9461},{"a":14,"b":3,"c":0.9441},{"a":9,"b":3,"c":0.9438},{"a":2,"b":5,"c":0.9427},{"a":17,"b":13,"c":0.9414},{"a":21,"b":13,"c":0.9414},{"a":4,"b":3,"c":0.9408},{"a":1,"b":2,"c":0.9407},{"a":25,"b":21,"c":0.9384},{"a":25,"b":13,"c":0.9384},{"a":4,"b":12,"c":0.9383},{"a":7,"b":5,"c":0.9375},{"a":1,"b":12,"c":0.9373},{"a":4,"b":13,"c":0.9371},{"a":11,"b":7,"c":0.9364},{"a":9,"b":2,"c":0.9348},{"a":5,"b":12,"c":0.9331},{"a":21,"b":11,"c":0.9328},{"a":10,"b":19,"c":0.9317},{"a":14,"b":13,"c":0.9315},{"a":21,"b":17,"c":0.9314},{"a":9,"b":1,"c":0.9309},{"a":17,"b":1,"c":0.9286},{"a":13,"b":12,"c":0.9285},{"a":9,"b":13,"c":0.9285},{"a":2,"b":3,"c":0.9273},{"a":4,"b":25,"c":0.9268},{"a":17,"b":10,"c":0.9256},{"a":9,"b":4,"c":0.9253},{"a":9,"b":21,"c":0.9251},{"a":1,"b":11,"c":0.9248},{"a":11,"b":12,"c":0.9245},{"a":14,"b":1,"c":0.9244},{"a":0,"b":10,"c":0.9218},{"a":14,"b":10,"c":0.9212},{"a":14,"b":21,"c":0.9189},{"a":7,"b":12,"c":0.9178},{"a":7,"b":2,"c":0.9167},{"a":25,"b":1,"c":0.9149},{"a":17,"b":19,"c":0.9131},{"a":16,"b":7,"c":0.9059},{"a":13,"b":2,"c":0.9028},{"a":4,"b":17,"c":0.9011},{"a":25,"b":12,"c":0.9002},{"a":1,"b":7,"c":0.9001},{"a":11,"b":8,"c":0.8992},{"a":4,"b":5,"c":0.8983},{"a":5,"b":8,"c":0.898},{"a":14,"b":25,"c":0.8968},{"a":9,"b":17,"c":0.8964},{"a":4,"b":7,"c":0.8952},{"a":25,"b":2,"c":0.8945},{"a":9,"b":25,"c":0.8925},{"a":25,"b":17,"c":0.8911},{"a":21,"b":7,"c":0.8888},{"a":18,"b":2,"c":0.8883},{"a":1,"b":5,"c":0.8866},{"a":9,"b":11,"c":0.8855},{"a":21,"b":5,"c":0.8846},{"a":17,"b":0,"c":0.8845},{"a":9,"b":5,"c":0.884},{"a":13,"b":19,"c":0.8836},{"a":17,"b":12,"c":0.8835},{"a":5,"b":3,"c":0.8828},{"a":22,"b":5,"c":0.8804},{"a":22,"b":11,"c":0.8787},{"a":22,"b":8,"c":0.878},{"a":11,"b":3,"c":0.8777},{"a":25,"b":19,"c":0.8775},{"a":1,"b":19,"c":0.8767},{"a":3,"b":19,"c":0.8762},{"a":11,"b":18,"c":0.8741},{"a":24,"b":12,"c":0.874},{"a":9,"b":7,"c":0.874},{"a":2,"b":8,"c":0.8718},{"a":16,"b":5,"c":0.8716},{"a":4,"b":14,"c":0.8705},{"a":7,"b":8,"c":0.8661},{"a":9,"b":14,"c":0.8626},{"a":17,"b":2,"c":0.8623},{"a":21,"b":19,"c":0.8597},{"a":7,"b":3,"c":0.8592},{"a":4,"b":18,"c":0.8589},{"a":16,"b":12,"c":0.8574},{"a":14,"b":12,"c":0.856},{"a":9,"b":24,"c":0.8534},{"a":16,"b":11,"c":0.8523},{"a":16,"b":2,"c":0.8515},{"a":18,"b":12,"c":0.8506},{"a":24,"b":13,"c":0.8501},{"a":13,"b":5,"c":0.8499},{"a":16,"b":21,"c":0.8495},{"a":6,"b":8,"c":0.8489},{"a":22,"b":7,"c":0.8483},{"a":13,"b":11,"c":0.8465},{"a":18,"b":8,"c":0.8445},{"a":24,"b":3,"c":0.8432},{"a":13,"b":7,"c":0.842},{"a":15,"b":6,"c":0.8417},{"a":4,"b":24,"c":0.8393},{"a":10,"b":13,"c":0.8382},{"a":9,"b":18,"c":0.8376},{"a":16,"b":3,"c":0.834},{"a":25,"b":11,"c":0.8332},{"a":18,"b":7,"c":0.833},{"a":22,"b":2,"c":0.8318},{"a":1,"b":18,"c":0.8303},{"a":10,"b":3,"c":0.8295},{"a":9,"b":16,"c":0.8293},{"a":15,"b":8,"c":0.8271},{"a":16,"b":1,"c":0.8268},{"a":18,"b":5,"c":0.8265},{"a":1,"b":10,"c":0.8247},{"a":12,"b":8,"c":0.824},{"a":8,"b":20,"c":0.822},{"a":21,"b":18,"c":0.8215},{"a":24,"b":2,"c":0.8194},{"a":24,"b":25,"c":0.8184},{"a":15,"b":7,"c":0.8183},{"a":24,"b":5,"c":0.8166},{"a":14,"b":2,"c":0.8143},{"a":17,"b":11,"c":0.8126},{"a":16,"b":4,"c":0.8099},{"a":1,"b":8,"c":0.8085},{"a":4,"b":19,"c":0.8083},{"a":13,"b":18,"c":0.807},{"a":15,"b":5,"c":0.8066},{"a":1,"b":0,"c":0.8052},{"a":17,"b":5,"c":0.8032},{"a":0,"b":3,"c":0.8025},{"a":21,"b":8,"c":0.8024},{"a":22,"b":20,"c":0.8004},{"a":25,"b":5,"c":0.8003},{"a":6,"b":7,"c":0.8003},{"a":9,"b":8,"c":0.7995},{"a":4,"b":8,"c":0.7991},{"a":16,"b":8,"c":0.7975},{"a":0,"b":13,"c":0.796},{"a":15,"b":11,"c":0.7953},{"a":21,"b":10,"c":0.7946},{"a":22,"b":1,"c":0.7929},{"a":25,"b":7,"c":0.7926},{"a":11,"b":20,"c":0.7923},{"a":22,"b":12,"c":0.7906},{"a":5,"b":20,"c":0.7898},{"a":21,"b":0,"c":0.7896},{"a":6,"b":5,"c":0.7877},{"a":15,"b":2,"c":0.7872},{"a":22,"b":6,"c":0.7855},{"a":17,"b":7,"c":0.7836},{"a":6,"b":11,"c":0.7803},{"a":22,"b":4,"c":0.7793},{"a":9,"b":19,"c":0.7783},{"a":7,"b":20,"c":0.7764},{"a":15,"b":18,"c":0.7758},{"a":23,"b":7,"c":0.7748},{"a":16,"b":13,"c":0.7741},{"a":14,"b":7,"c":0.7739},{"a":14,"b":11,"c":0.7726},{"a":22,"b":21,"c":0.7724},{"a":25,"b":0,"c":0.7675},{"a":18,"b":3,"c":0.7671},{"a":24,"b":1,"c":0.7665},{"a":12,"b":19,"c":0.7646},{"a":16,"b":17,"c":0.7632},{"a":24,"b":21,"c":0.763},{"a":16,"b":25,"c":0.7589},{"a":25,"b":10,"c":0.7575},{"a":25,"b":18,"c":0.756},{"a":16,"b":14,"c":0.7554},{"a":16,"b":20,"c":0.7552},{"a":24,"b":17,"c":0.7537},{"a":14,"b":5,"c":0.7531},{"a":16,"b":6,"c":0.7526},{"a":24,"b":7,"c":0.7518},{"a":24,"b":11,"c":0.7514},{"a":4,"b":10,"c":0.7505},{"a":16,"b":15,"c":0.745},{"a":3,"b":8,"c":0.7448},{"a":2,"b":20,"c":0.7436},{"a":16,"b":23,"c":0.7435},{"a":9,"b":22,"c":0.742},{"a":23,"b":8,"c":0.7419},{"a":1,"b":20,"c":0.7416},{"a":22,"b":15,"c":0.7389},{"a":15,"b":12,"c":0.7333},{"a":21,"b":20,"c":0.7327},{"a":16,"b":22,"c":0.7317},{"a":18,"b":20,"c":0.7305},{"a":2,"b":19,"c":0.7291},{"a":14,"b":24,"c":0.7233},{"a":9,"b":10,"c":0.7217},{"a":6,"b":20,"c":0.7188},{"a":22,"b":3,"c":0.7184},{"a":13,"b":8,"c":0.7159},{"a":9,"b":26,"c":0.7155},{"a":9,"b":15,"c":0.7153},{"a":23,"b":11,"c":0.7134},{"a":6,"b":2,"c":0.713},{"a":4,"b":0,"c":0.7096},{"a":22,"b":18,"c":0.7077},{"a":27,"b":15,"c":0.7069},{"a":16,"b":18,"c":0.7049},{"a":24,"b":18,"c":0.7047},{"a":12,"b":20,"c":0.6988},{"a":6,"b":18,"c":0.696},{"a":4,"b":15,"c":0.6958},{"a":21,"b":26,"c":0.6926},{"a":7,"b":19,"c":0.6915},{"a":10,"b":12,"c":0.6915},{"a":9,"b":0,"c":0.6909},{"a":11,"b":19,"c":0.6886},{"a":16,"b":24,"c":0.6827},{"a":6,"b":12,"c":0.6823},{"a":22,"b":17,"c":0.68},{"a":23,"b":21,"c":0.6786},{"a":25,"b":8,"c":0.6779},{"a":23,"b":1,"c":0.6768},{"a":15,"b":1,"c":0.6765},{"a":15,"b":21,"c":0.675},{"a":4,"b":20,"c":0.675},{"a":23,"b":6,"c":0.6736},{"a":23,"b":2,"c":0.6699},{"a":22,"b":13,"c":0.6697},{"a":10,"b":2,"c":0.6693},{"a":26,"b":12,"c":0.6677},{"a":17,"b":8,"c":0.6673},{"a":0,"b":12,"c":0.666},{"a":26,"b":3,"c":0.666},{"a":4,"b":23,"c":0.6651},{"a":5,"b":19,"c":0.6627},{"a":17,"b":18,"c":0.6601},{"a":1,"b":26,"c":0.656},{"a":17,"b":26,"c":0.6525},{"a":3,"b":20,"c":0.6517},{"a":14,"b":26,"c":0.6472},{"a":23,"b":15,"c":0.6466},{"a":23,"b":5,"c":0.6456},{"a":24,"b":19,"c":0.6433},{"a":15,"b":3,"c":0.6426},{"a":15,"b":20,"c":0.6423},{"a":13,"b":20,"c":0.6396},{"a":26,"b":2,"c":0.6393},{"a":16,"b":19,"c":0.6368},{"a":9,"b":20,"c":0.6366},{"a":23,"b":18,"c":0.6337},{"a":9,"b":23,"c":0.6333},{"a":23,"b":20,"c":0.6313},{"a":23,"b":12,"c":0.6296},{"a":9,"b":6,"c":0.6291},{"a":10,"b":11,"c":0.6273},{"a":0,"b":2,"c":0.6264},{"a":22,"b":24,"c":0.6261},{"a":10,"b":5,"c":0.6253},{"a":22,"b":14,"c":0.6252},{"a":22,"b":23,"c":0.6241},{"a":14,"b":18,"c":0.6222},{"a":22,"b":25,"c":0.6221},{"a":25,"b":26,"c":0.6218},{"a":17,"b":20,"c":0.6207},{"a":4,"b":6,"c":0.6191},{"a":10,"b":7,"c":0.6174},{"a":1,"b":6,"c":0.6162},{"a":25,"b":15,"c":0.6149},{"a":0,"b":7,"c":0.6138},{"a":21,"b":6,"c":0.6091},{"a":14,"b":8,"c":0.6045},{"a":16,"b":26,"c":0.6015},{"a":16,"b":0,"c":0.6014},{"a":4,"b":26,"c":0.6008},{"a":24,"b":8,"c":0.6001},{"a":13,"b":26,"c":0.5982},{"a":27,"b":18,"c":0.5953},{"a":0,"b":11,"c":0.5952},{"a":11,"b":26,"c":0.5931},{"a":15,"b":13,"c":0.5913},{"a":23,"b":17,"c":0.588},{"a":23,"b":13,"c":0.5865},{"a":23,"b":3,"c":0.5862},{"a":16,"b":10,"c":0.586},{"a":0,"b":26,"c":0.5753},{"a":14,"b":20,"c":0.5743},{"a":27,"b":7,"c":0.5737},{"a":23,"b":14,"c":0.5732},{"a":18,"b":19,"c":0.5676},{"a":24,"b":10,"c":0.5675},{"a":27,"b":16,"c":0.566},{"a":6,"b":3,"c":0.5639},{"a":27,"b":6,"c":0.5637},{"a":22,"b":19,"c":0.5625},{"a":27,"b":23,"c":0.5614},{"a":18,"b":26,"c":0.5602},{"a":22,"b":10,"c":0.5576},{"a":7,"b":26,"c":0.5559},{"a":0,"b":5,"c":0.5474},{"a":8,"b":19,"c":0.5458},{"a":26,"b":19,"c":0.5449},{"a":10,"b":20,"c":0.5425},{"a":23,"b":25,"c":0.5399},{"a":24,"b":15,"c":0.538},{"a":27,"b":11,"c":0.5304},{"a":26,"b":5,"c":0.5299},{"a":27,"b":8,"c":0.5281},{"a":23,"b":0,"c":0.5234},{"a":23,"b":10,"c":0.5231},{"a":25,"b":20,"c":0.5226},{"a":10,"b":8,"c":0.5204},{"a":27,"b":20,"c":0.5166},{"a":23,"b":19,"c":0.5162},{"a":15,"b":17,"c":0.5056},{"a":27,"b":2,"c":0.5018},{"a":15,"b":26,"c":0.5008},{"a":24,"b":0,"c":0.4999},{"a":26,"b":8,"c":0.4986},{"a":6,"b":13,"c":0.4951},{"a":19,"b":20,"c":0.4943},{"a":25,"b":6,"c":0.4896},{"a":10,"b":18,"c":0.4858},{"a":24,"b":6,"c":0.4845},{"a":27,"b":5,"c":0.4826},{"a":22,"b":0,"c":0.4723},{"a":10,"b":26,"c":0.469},{"a":27,"b":21,"c":0.4645},{"a":27,"b":12,"c":0.4637},{"a":14,"b":15,"c":0.4574},{"a":0,"b":20,"c":0.4445},{"a":22,"b":26,"c":0.4395},{"a":24,"b":20,"c":0.4378},{"a":17,"b":6,"c":0.4372},{"a":24,"b":26,"c":0.4318},{"a":0,"b":8,"c":0.4292},{"a":0,"b":18,"c":0.4266},{"a":27,"b":1,"c":0.4261},{"a":27,"b":4,"c":0.418},{"a":6,"b":26,"c":0.4065},{"a":26,"b":20,"c":0.4044},{"a":27,"b":9,"c":0.4043},{"a":28,"b":20,"c":0.4029},{"a":23,"b":26,"c":0.4019},{"a":27,"b":25,"c":0.3997},{"a":11,"b":28,"c":0.3952},{"a":27,"b":13,"c":0.3869},{"a":14,"b":6,"c":0.386},{"a":27,"b":3,"c":0.385},{"a":15,"b":19,"c":0.3713},{"a":6,"b":28,"c":0.3688},{"a":22,"b":28,"c":0.362},{"a":27,"b":26,"c":0.35},{"a":27,"b":22,"c":0.3471},{"a":23,"b":24,"c":0.3458},{"a":28,"b":8,"c":0.3448},{"a":27,"b":28,"c":0.3354},{"a":2,"b":28,"c":0.3181},{"a":18,"b":28,"c":0.2938},{"a":6,"b":19,"c":0.2901},{"a":15,"b":10,"c":0.2788},{"a":4,"b":28,"c":0.2726},{"a":27,"b":14,"c":0.2621},{"a":15,"b":0,"c":0.262},{"a":15,"b":28,"c":0.2527},{"a":5,"b":28,"c":0.2514},{"a":6,"b":10,"c":0.2492},{"a":23,"b":28,"c":0.2389},{"a":21,"b":28,"c":0.2324},{"a":27,"b":17,"c":0.2313},{"a":1,"b":28,"c":0.2304},{"a":27,"b":24,"c":0.2301},{"a":7,"b":28,"c":0.1999},{"a":0,"b":6,"c":0.1897},{"a":27,"b":19,"c":0.1792},{"a":27,"b":0,"c":0.1526},{"a":16,"b":28,"c":0.1426},{"a":28,"b":12,"c":0.1205},{"a":25,"b":28,"c":0.1179},{"a":28,"b":3,"c":0.0993},{"a":9,"b":28,"c":0.0724},{"a":13,"b":28,"c":0.069},{"a":17,"b":28,"c":0.0577},{"a":14,"b":28,"c":0.0328},{"a":27,"b":10,"c":0.0296},{"a":24,"b":28,"c":0.0146},{"a":26,"b":28,"c":0.0132},{"a":28,"b":19,"c":0.012},{"a":10,"b":28,"c":0.008},{"a":0,"b":28,"c":-0.0074}]};
+
+// ─── State ──────────────────────────────────────────────────────────
+const STATE = {
+  search: "",
+  hideOutlier: true,
+  logScale: false,
+  y0: DATA.meta.year_min,
+  y1: DATA.meta.year_max,
+  focusId: null,          // topic currently in modal
+  compareMode: false,     // waiting for second topic pick
+  compareId: null,        // topic overlayed in modal
+  heatmapOrder: "cluster",// cluster | size | alpha
+};
+
+// ─── Utils ──────────────────────────────────────────────────────────
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const fmt = (n) => n.toLocaleString("en-US");
+const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+const topicById = (id) => DATA.topics.find((t) => t.id === id);
+const yearsInRange = () => DATA.meta.year_range.filter((y) => y >= STATE.y0 && y <= STATE.y1);
+const sliceSeries = (series) => {
+  const y0i = STATE.y0 - DATA.meta.year_min;
+  const y1i = STATE.y1 - DATA.meta.year_min;
+  return series.slice(Math.max(0, y0i), y1i + 1);
+};
+function filteredTopics() {
+  const q = STATE.search.trim().toLowerCase();
+  return DATA.topics.filter((t) => {
+    if (STATE.hideOutlier && t.id < 0) return false;
+    if (!q) return true;
+    if (t.label.toLowerCase().includes(q)) return true;
+    return (t.keybert || []).some((k) => k.toLowerCase().includes(q));
+  });
+}
+function escapeHtml(s) { return String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])); }
+
+// ─── Stat tiles ─────────────────────────────────────────────────────
+function renderStats() {
+  const ts = filteredTopics();
+  const yrs = yearsInRange();
+  const totalInRange = DATA.yearly.filter((r) => r.y >= STATE.y0 && r.y <= STATE.y1).reduce((a, r) => a + r.n, 0);
+  const nContent = ts.filter((t) => t.id >= 0).length;
+  const peakInRange = DATA.yearly.filter((r) => r.y >= STATE.y0 && r.y <= STATE.y1).reduce((best, r) => (!best || r.n > best.n ? r : best), null);
+  $("#stats").innerHTML = `
+    <div class="stat"><div class="n">${fmt(totalInRange)}</div><div class="lbl">records in range</div><div class="sub">${fmt(DATA.meta.total_records)} total corpus</div></div>
+    <div class="stat"><div class="n">${yrs[0]}–${yrs[yrs.length-1]}</div><div class="lbl">years covered</div><div class="sub">${yrs.length} year${yrs.length === 1 ? "" : "s"}</div></div>
+    <div class="stat"><div class="n">${nContent}</div><div class="lbl">topics matching filter</div><div class="sub">${STATE.hideOutlier ? "outlier hidden" : "outlier shown"}</div></div>
+    <div class="stat click" id="stat-peak"><div class="n">${peakInRange ? peakInRange.y : "—"}</div><div class="lbl">peak year in range</div><div class="sub">${peakInRange ? fmt(peakInRange.n) + " records" : ""}</div></div>
+  `;
+  $("#stat-peak").onclick = () => { if (peakInRange) { STATE.y0 = peakInRange.y - 5; STATE.y1 = Math.min(DATA.meta.year_max, peakInRange.y + 5); syncInputs(); renderAll(); } };
+}
+
+// ─── Decade chips ───────────────────────────────────────────────────
+function renderDecades() {
+  const c = $("#decades");
+  // Clear all except the first "Jump to era" label.
+  [...c.querySelectorAll(".decade")].forEach((n) => n.remove());
+  const decades = [];
+  for (let d = Math.floor(DATA.meta.year_min / 10) * 10; d <= DATA.meta.year_max; d += 10) decades.push(d);
+  // "All" button
+  const all = document.createElement("button");
+  all.className = "decade" + (STATE.y0 === DATA.meta.year_min && STATE.y1 === DATA.meta.year_max ? " active" : "");
+  all.textContent = "All";
+  all.type = "button";
+  all.onclick = () => { STATE.y0 = DATA.meta.year_min; STATE.y1 = DATA.meta.year_max; syncInputs(); renderAll(); };
+  c.appendChild(all);
+  for (const d of decades) {
+    const b = document.createElement("button");
+    b.className = "decade" + (STATE.y0 === d && STATE.y1 === Math.min(DATA.meta.year_max, d + 9) ? " active" : "");
+    b.textContent = d + "s";
+    b.type = "button";
+    b.onclick = () => { STATE.y0 = d; STATE.y1 = Math.min(DATA.meta.year_max, d + 9); syncInputs(); renderAll(); };
+    c.appendChild(b);
+  }
+}
+
+// ─── Growth curve ───────────────────────────────────────────────────
+function renderGrowth() {
+  const svg = $("#growth svg");
+  const W = 900, H = 240, ML = 44, MR = 12, MT = 12, MB = 28;
+  const iw = W - ML - MR, ih = H - MT - MB;
+  const data = DATA.yearly.filter((r) => r.y >= STATE.y0 && r.y <= STATE.y1);
+  if (!data.length) { svg.innerHTML = ""; return; }
+  const yMax = Math.max(...data.map((r) => r.n));
+  const yScale = (v) => {
+    if (STATE.logScale) {
+      const lv = Math.log10(Math.max(1, v));
+      const lmax = Math.log10(Math.max(1, yMax));
+      return MT + ih - (lv / (lmax || 1)) * ih;
+    }
+    return MT + ih - (v / (yMax || 1)) * ih;
+  };
+  const xScale = (y) => ML + ((y - STATE.y0) / Math.max(1, STATE.y1 - STATE.y0)) * iw;
+  // Y grid + labels
+  let ticks = [];
+  if (STATE.logScale) {
+    for (let v = 1; v <= yMax; v *= 10) ticks.push(v);
+  } else {
+    const raw = Math.pow(10, Math.floor(Math.log10(yMax)));
+    const s = yMax / raw > 5 ? raw : yMax / raw > 2 ? raw / 2 : raw / 5;
+    for (let v = 0; v <= yMax; v += s) ticks.push(v);
+  }
+  let gridLines = ticks.map((t) => `<line class="grid" x1="${ML}" y1="${yScale(t)}" x2="${W-MR}" y2="${yScale(t)}"/><text class="tick" x="${ML-6}" y="${yScale(t)+3}" text-anchor="end">${fmt(t)}</text>`).join("");
+  // X ticks
+  const span = STATE.y1 - STATE.y0;
+  const step = span > 40 ? 10 : span > 20 ? 5 : span > 10 ? 2 : 1;
+  let xTicks = "";
+  for (let y = Math.ceil(STATE.y0 / step) * step; y <= STATE.y1; y += step) {
+    xTicks += `<line class="grid" x1="${xScale(y)}" y1="${MT}" x2="${xScale(y)}" y2="${MT+ih}"/><text class="tick" x="${xScale(y)}" y="${H-8}" text-anchor="middle">${y}</text>`;
+  }
+  // Line + area
+  const pts = data.map((r) => `${xScale(r.y)},${yScale(r.n)}`);
+  const line = `M ${pts.join(" L ")}`;
+  const area = `M ${xScale(data[0].y)},${MT+ih} L ${pts.join(" L ")} L ${xScale(data[data.length-1].y)},${MT+ih} Z`;
+  // Peak annotation
+  const peak = data.reduce((b, r) => (r.n > b.n ? r : b), data[0]);
+  const px = xScale(peak.y), py = yScale(peak.n);
+  const peakLabelSide = peak.y > (STATE.y0 + STATE.y1) / 2 ? "end" : "start";
+  const peakLabelX = peakLabelSide === "end" ? px - 6 : px + 6;
+  const peakAnno = `
+    <line class="peak-line" x1="${px}" y1="${py}" x2="${px}" y2="${MT+ih}"/>
+    <circle class="dot" cx="${px}" cy="${py}" r="3" fill="var(--accent)"/>
+    <text class="peak-lbl" x="${peakLabelX}" y="${py + 4}" text-anchor="${peakLabelSide}">${peak.y} · ${fmt(peak.n)}</text>
+    <text class="peak-sub" x="${peakLabelX}" y="${py + 16}" text-anchor="${peakLabelSide}">peak year</text>
+  `;
+  svg.innerHTML = `${gridLines}${xTicks}<path class="area" d="${area}"/><path class="line" d="${line}"/>${peakAnno}`;
+  // Hover tooltip
+  const tt = $("#growth-tt");
+  svg.onmousemove = (e) => {
+    const r = svg.getBoundingClientRect();
+    const scaleX = r.width / W;
+    const px2 = (e.clientX - r.left) / scaleX;
+    let closest = data[0], bestD = Infinity;
+    for (const d of data) { const dx = Math.abs(xScale(d.y) - px2); if (dx < bestD) { bestD = dx; closest = d; } }
+    tt.innerHTML = `<strong>${closest.y}</strong> · ${fmt(closest.n)} publications`;
+    tt.style.left = (xScale(closest.y) * scaleX) + "px";
+    tt.style.top = (yScale(closest.n) * (r.height / H)) + "px";
+    tt.style.opacity = 1;
+  };
+  svg.onmouseleave = () => { tt.style.opacity = 0; };
+  // Click to zoom to decade
+  svg.onclick = (e) => {
+    const r = svg.getBoundingClientRect();
+    const scaleX = r.width / W;
+    const px2 = (e.clientX - r.left) / scaleX;
+    let closest = data[0], bestD = Infinity;
+    for (const d of data) { const dx = Math.abs(xScale(d.y) - px2); if (dx < bestD) { bestD = dx; closest = d; } }
+    const dec = Math.floor(closest.y / 10) * 10;
+    STATE.y0 = dec; STATE.y1 = Math.min(DATA.meta.year_max, dec + 9);
+    syncInputs(); renderAll();
+  };
+}
+
+// ─── Sparkline SVG ──────────────────────────────────────────────────
+function sparklineSVG(series) {
+  if (!series.length) return "";
+  const W = 76, H = 22, PAD = 2;
+  const max = Math.max(1, ...series);
+  const step = (W - PAD * 2) / Math.max(1, series.length - 1);
+  const pts = series.map((v, i) => `${PAD + i * step},${H - PAD - (v / max) * (H - PAD * 2)}`);
+  const line = `M ${pts.join(" L ")}`;
+  const fill = `M ${PAD},${H-PAD} L ${pts.join(" L ")} L ${PAD + (series.length-1) * step},${H-PAD} Z`;
+  return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none"><path class="fill" d="${fill}"/><path class="line" d="${line}"/></svg>`;
+}
+
+// ─── Topic list ─────────────────────────────────────────────────────
+function renderTopics() {
+  const ts = filteredTopics();
+  const total = ts.reduce((a, t) => a + t.n, 0);
+  const maxN = ts.reduce((a, t) => Math.max(a, t.n), 0);
+  $("#topics-sub").textContent = `${ts.length} topics · ${fmt(total)} records · click any row for the deep dive.`;
+  const list = $("#topics-list");
+  list.innerHTML = "";
+  ts.forEach((t, i) => {
+    const row = document.createElement("div");
+    const isCompareTarget = STATE.compareMode && STATE.focusId !== null && t.id !== STATE.focusId;
+    row.className = "topic-row" + (t.id < 0 ? " outlier" : "") + (t.id === STATE.focusId ? " active" : "") + (isCompareTarget ? " compare-target" : "");
+    row.setAttribute("role", "listitem");
+    row.dataset.tid = t.id;
+    const kws = (t.keybert || []).slice(0, 6).join(" · ") || "—";
+    const spark = sparklineSVG(sliceSeries(t.series));
+    const wPct = maxN ? Math.max(3, Math.round((t.n / maxN) * 100)) : 3;
+    row.innerHTML = `
+      <div class="rank">${i + 1}</div>
+      <div class="label" title="${escapeHtml(t.label)}">${escapeHtml(t.label)}</div>
+      <div class="kw" title="${escapeHtml(kws)}">${escapeHtml(kws)}</div>
+      <div class="spark">${spark}</div>
+      <div class="n">${fmt(t.n)}<span class="n-bar" style="width: ${wPct}%"></span></div>
+    `;
+    row.onclick = () => openTopic(t.id);
+    list.appendChild(row);
+  });
+}
+
+// ─── Heatmap ────────────────────────────────────────────────────────
+function orderedTopics() {
+  const ts = filteredTopics();
+  const ids = ts.map((t) => t.id);
+  if (STATE.heatmapOrder === "alpha") ts.sort((a, b) => a.label.localeCompare(b.label));
+  else if (STATE.heatmapOrder === "size") ts.sort((a, b) => b.n - a.n);
+  else if (STATE.heatmapOrder === "cluster") {
+    const rank = new Map(DATA.meta.cluster_order.map((id, i) => [id, i]));
+    ts.sort((a, b) => (rank.get(a.id) ?? 999) - (rank.get(b.id) ?? 999));
+  }
+  return ts;
+}
+function renderHeatmap() {
+  const svg = $("#heatmap");
+  const ts = orderedTopics();
+  const N = ts.length;
+  if (!N) { svg.innerHTML = ""; svg.setAttribute("width", 0); svg.setAttribute("height", 0); return; }
+  const cell = N > 26 ? 15 : N > 18 ? 20 : 26;
+  const labelW = 170, labelH = 110;
+  const W = labelW + N * cell + 10, H = labelH + N * cell + 10;
+  svg.setAttribute("width", W); svg.setAttribute("height", H); svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+  const idIdx = new Map(ts.map((t, i) => [t.id, i]));
+  const M = Array.from({ length: N }, () => new Array(N).fill(null));
+  for (let i = 0; i < N; i++) M[i][i] = 1.0;
+  for (const c of DATA.correlations) {
+    const i = idIdx.get(c.a), j = idIdx.get(c.b);
+    if (i === undefined || j === undefined) continue;
+    M[i][j] = c.c; M[j][i] = c.c;
+  }
+  const posStops = [
+    getComputedStyle(document.documentElement).getPropertyValue("--seq-100").trim(),
+    getComputedStyle(document.documentElement).getPropertyValue("--seq-200").trim(),
+    getComputedStyle(document.documentElement).getPropertyValue("--seq-300").trim(),
+    getComputedStyle(document.documentElement).getPropertyValue("--seq-400").trim(),
+    getComputedStyle(document.documentElement).getPropertyValue("--seq-500").trim(),
+    getComputedStyle(document.documentElement).getPropertyValue("--seq-600").trim(),
+    getComputedStyle(document.documentElement).getPropertyValue("--seq-700").trim(),
+  ];
+  const negStops = ["#f5d5d5", "#eaacac", "#e08282", "#d55959", "#d03b3b", "#a72d2d", "#7f2222"];
+  const gridColor = getComputedStyle(document.documentElement).getPropertyValue("--grid").trim();
+  const colorFor = (v) => {
+    if (v === null) return gridColor;
+    const abs = Math.min(1, Math.abs(v));
+    const stops = v >= 0 ? posStops : negStops;
+    return stops[Math.min(stops.length - 1, Math.floor(abs * (stops.length - 1)))];
+  };
+  let s = "";
+  for (let i = 0; i < N; i++) {
+    const rowY = labelH + i * cell;
+    const t = ts[i];
+    const short = t.label.length > 26 ? t.label.slice(0, 26) + "…" : t.label;
+    s += `<text class="rowlbl" data-i="${i}" x="${labelW - 6}" y="${rowY + cell / 2 + 3}" text-anchor="end">${escapeHtml(short)}</text>`;
+    const colX = labelW + i * cell + cell / 2;
+    s += `<text class="collbl" data-j="${i}" x="${colX}" y="${labelH - 6}" text-anchor="end" transform="rotate(-55 ${colX} ${labelH - 6})">${escapeHtml(short)}</text>`;
+  }
+  for (let i = 0; i < N; i++) {
+    for (let j = 0; j < N; j++) {
+      const v = M[i][j];
+      const x = labelW + j * cell, y = labelH + i * cell;
+      const fill = colorFor(v);
+      s += `<rect x="${x}" y="${y}" width="${cell - 1}" height="${cell - 1}" fill="${fill}" data-i="${i}" data-j="${j}" data-v="${v === null ? "null" : v.toFixed(4)}"/>`;
+    }
+  }
+  svg.innerHTML = s;
+  const tt = $("#heatmap-tt");
+  svg.querySelectorAll("rect").forEach((r) => {
+    r.onmouseenter = () => {
+      const i = +r.dataset.i, j = +r.dataset.j, v = r.dataset.v;
+      const a = ts[i], b = ts[j];
+      const vFmt = v === "null" ? "—" : parseFloat(v).toFixed(3);
+      tt.innerHTML = `<strong>${escapeHtml(a.label)}</strong><br>↔ <strong>${escapeHtml(b.label)}</strong><br><span style="color: var(--ink-3);">Pearson r = ${vFmt}</span><br><span style="color: var(--ink-3); font-size: 11px;">click to compare</span>`;
+      const rect = r.getBoundingClientRect();
+      const outer = $("#heatmap-outer").getBoundingClientRect();
+      tt.style.left = (rect.left + rect.width / 2 - outer.left) + "px";
+      tt.style.top = (rect.top - outer.top) + "px";
+      tt.style.opacity = 1;
+    };
+    r.onmouseleave = () => { tt.style.opacity = 0; };
+    r.onclick = () => {
+      const i = +r.dataset.i, j = +r.dataset.j;
+      if (i === j) { openTopic(ts[i].id); return; }
+      openTopic(ts[i].id);
+      STATE.compareId = ts[j].id;
+      STATE.compareMode = false;
+      renderModal();
+    };
+  });
+}
+
+// ─── Modal ──────────────────────────────────────────────────────────
+function openTopic(id) {
+  if (STATE.compareMode && STATE.focusId !== null && id !== STATE.focusId) {
+    STATE.compareId = id;
+    STATE.compareMode = false;
+    $("#compare-banner").style.display = "none";
+    renderModal();
+    renderTopics();
+    return;
+  }
+  STATE.focusId = id;
+  STATE.compareId = null;
+  $("#modal-back").classList.add("show");
+  document.body.style.overflow = "hidden";
+  renderModal();
+  renderTopics();
+  updateHash();
+}
+function closeModal() {
+  STATE.focusId = null;
+  STATE.compareId = null;
+  STATE.compareMode = false;
+  $("#modal-back").classList.remove("show");
+  $("#compare-banner").style.display = "none";
+  document.body.style.overflow = "";
+  renderTopics();
+  updateHash();
+}
+function renderModal() {
+  if (STATE.focusId === null) return;
+  const t = topicById(STATE.focusId);
+  if (!t) return;
+  const c = STATE.compareId !== null ? topicById(STATE.compareId) : null;
+  const nRecs = sliceSeries(t.series).reduce((a, v) => a + v, 0);
+  const peakYr = t.peak_year;
+  $("#modal-title").innerHTML = `${escapeHtml(t.label)}${c ? ` <span style="color: var(--ink-3); font-weight: 400; font-size: 14px;">vs</span> <span style="color: var(--accent-2);">${escapeHtml(c.label)}</span>` : ""}`;
+  $("#modal-stats").innerHTML = `
+    <span class="s"><strong>${fmt(t.n)}</strong> total records</span>
+    <span class="s"><strong>${fmt(nRecs)}</strong> in range</span>
+    ${peakYr ? `<span class="s">peak <strong>${peakYr}</strong> (${fmt(t.peak_value)})</span>` : ""}
+    ${t.id < 0 ? '<span class="s" style="color: var(--ink-3);">outlier cluster</span>' : ""}
+  `;
+  // Compare legend
+  const leg = $("#modal-legend");
+  if (c) {
+    const pair = DATA.correlations.find((cc) => (cc.a === t.id && cc.b === c.id) || (cc.a === c.id && cc.b === t.id));
+    leg.innerHTML = `
+      <span><span class="swatch" style="background: var(--accent);"></span>${escapeHtml(t.label)}</span>
+      <span><span class="swatch" style="background: var(--accent-2);"></span>${escapeHtml(c.label)}</span>
+      <span style="margin-left: auto; color: var(--ink-3);">Pearson r = <strong style="color: var(--ink-1);">${pair ? pair.c.toFixed(3) : "—"}</strong></span>
+    `;
+    leg.style.display = "flex";
+  } else {
+    leg.style.display = "none";
+  }
+  // Decade bars
+  drawDecades(t, c);
+  // Keywords
+  const kwEl = $("#modal-kws");
+  kwEl.innerHTML = (t.keybert || []).map((k) => `<span class="k" data-kw="${escapeHtml(k)}">${escapeHtml(k)}</span>`).join("");
+  kwEl.querySelectorAll(".k").forEach((el) => {
+    el.onclick = () => { $("#search").value = el.dataset.kw; STATE.search = el.dataset.kw; closeModal(); renderAll(); };
+  });
+  // Peers
+  const peers = DATA.correlations
+    .filter((cc) => cc.a === t.id || cc.b === t.id)
+    .map((cc) => ({ other: topicById(cc.a === t.id ? cc.b : cc.a), c: cc.c }))
+    .filter((p) => p.other && (!STATE.hideOutlier || p.other.id >= 0))
+    .sort((a, b) => b.c - a.c)
+    .slice(0, 12);
+  const peersEl = $("#modal-peers");
+  peersEl.innerHTML = peers.map((p) => `
+    <div class="peer" data-tid="${p.other.id}">
+      <div class="p-lbl" title="${escapeHtml(p.other.label)}">${escapeHtml(p.other.label)}</div>
+      <div class="p-bar"><div class="fill" style="width: ${Math.round(Math.max(0, p.c) * 100)}%"></div></div>
+      <div class="p-r">${p.c.toFixed(2)}</div>
+    </div>
+  `).join("");
+  peersEl.querySelectorAll(".peer").forEach((el) => {
+    el.onclick = () => openTopic(+el.dataset.tid);
+  });
+  // Compare button
+  const btn = $("#modal-compare");
+  if (c) {
+    btn.textContent = "Clear comparison";
+    btn.onclick = () => { STATE.compareId = null; renderModal(); };
+  } else {
+    btn.textContent = "Compare with…";
+    btn.onclick = () => {
+      STATE.compareMode = true;
+      $("#compare-banner").style.display = "flex";
+      $("#cb-first").textContent = t.label;
+      $("#modal-back").classList.remove("show");
+      document.body.style.overflow = "";
+      renderTopics();
+    };
+  }
+}
+function drawDecades(t, c) {
+  const container = $("#modal-decades");
+  const yrRange = DATA.meta.year_range;
+  const decades = {};
+  for (let i = 0; i < yrRange.length; i++) {
+    const d = Math.floor(yrRange[i] / 10) * 10;
+    decades[d] = decades[d] || { a: 0, b: 0 };
+    decades[d].a += t.series[i];
+    if (c) decades[d].b += c.series[i];
+  }
+  const keys = Object.keys(decades).map(Number).sort((a, b) => a - b);
+  const maxV = Math.max(1, ...keys.flatMap((k) => c ? [decades[k].a, decades[k].b] : [decades[k].a]));
+  const H = 120;
+  container.innerHTML = keys.map((k) => {
+    const ha = Math.round((decades[k].a / maxV) * H);
+    const hb = c ? Math.round((decades[k].b / maxV) * H) : 0;
+    const totA = decades[k].a;
+    const totB = c ? decades[k].b : null;
+    const decLbl = k % 100 < 10 ? "0" + (k % 100) : String(k % 100);
+    return `<div class="db" title="${k}s${c ? ` — A: ${fmt(totA)} · B: ${fmt(totB)}` : `: ${fmt(totA)}`}">
+      <div class="bar-wrap">
+        ${c ? `<div class="bar-b" style="height: ${hb}px;"></div>` : ""}
+        <div class="bar-a" style="height: ${ha}px;"></div>
+      </div>
+      <div class="lbl">${decLbl}s</div>
+      <div class="n">${fmt(totA)}${c ? " · " + fmt(totB) : ""}</div>
+    </div>`;
+  }).join("");
+}
+
+// ─── URL hash state ─────────────────────────────────────────────────
+function updateHash() {
+  const p = new URLSearchParams();
+  if (STATE.search) p.set("s", STATE.search);
+  if (STATE.y0 !== DATA.meta.year_min) p.set("y0", STATE.y0);
+  if (STATE.y1 !== DATA.meta.year_max) p.set("y1", STATE.y1);
+  if (!STATE.hideOutlier) p.set("h", "0");
+  if (STATE.logScale) p.set("log", "1");
+  if (STATE.heatmapOrder !== "cluster") p.set("o", STATE.heatmapOrder);
+  if (STATE.focusId !== null) p.set("t", STATE.focusId);
+  if (STATE.compareId !== null) p.set("c", STATE.compareId);
+  const h = p.toString();
+  history.replaceState(null, "", h ? "#" + h : location.pathname);
+}
+function readHash() {
+  const h = location.hash.replace(/^#/, "");
+  if (!h) return;
+  const p = new URLSearchParams(h);
+  if (p.has("s")) STATE.search = p.get("s");
+  if (p.has("y0")) STATE.y0 = clamp(+p.get("y0"), DATA.meta.year_min, DATA.meta.year_max);
+  if (p.has("y1")) STATE.y1 = clamp(+p.get("y1"), DATA.meta.year_min, DATA.meta.year_max);
+  if (p.has("h")) STATE.hideOutlier = p.get("h") !== "0";
+  if (p.has("log")) STATE.logScale = p.get("log") === "1";
+  if (p.has("o")) STATE.heatmapOrder = p.get("o");
+  if (p.has("t")) STATE.focusId = +p.get("t");
+  if (p.has("c")) STATE.compareId = +p.get("c");
+}
+
+// ─── Sync + render ──────────────────────────────────────────────────
+function syncInputs() {
+  $("#y0").value = STATE.y0; $("#y1").value = STATE.y1;
+  $("#search").value = STATE.search;
+  $("#hide-outlier").checked = STATE.hideOutlier;
+  $("#scale-log").checked = STATE.logScale;
+}
+function renderAll() {
+  syncInputs();
+  renderStats();
+  renderDecades();
+  renderGrowth();
+  renderTopics();
+  renderHeatmap();
+  if (STATE.focusId !== null) {
+    $("#modal-back").classList.add("show");
+    document.body.style.overflow = "hidden";
+    renderModal();
+  }
+  updateHash();
+}
+
+// ─── Init ───────────────────────────────────────────────────────────
+function init() {
+  readHash();
+  const y0In = $("#y0"), y1In = $("#y1");
+  y0In.min = y1In.min = DATA.meta.year_min;
+  y0In.max = y1In.max = DATA.meta.year_max;
+  y0In.onchange = () => { STATE.y0 = clamp(+y0In.value || DATA.meta.year_min, DATA.meta.year_min, DATA.meta.year_max); if (STATE.y0 > STATE.y1) STATE.y0 = STATE.y1; renderAll(); };
+  y1In.onchange = () => { STATE.y1 = clamp(+y1In.value || DATA.meta.year_max, DATA.meta.year_min, DATA.meta.year_max); if (STATE.y1 < STATE.y0) STATE.y1 = STATE.y0; renderAll(); };
+  $("#search").oninput = (e) => { STATE.search = e.target.value; renderAll(); };
+  $("#hide-outlier").onchange = (e) => { STATE.hideOutlier = e.target.checked; renderAll(); };
+  $("#scale-log").onchange = (e) => { STATE.logScale = e.target.checked; renderGrowth(); };
+  $("#clear-filters").onclick = () => {
+    STATE.search = ""; STATE.hideOutlier = true; STATE.logScale = false;
+    STATE.y0 = DATA.meta.year_min; STATE.y1 = DATA.meta.year_max;
+    STATE.focusId = null; STATE.compareId = null; STATE.compareMode = false;
+    $("#modal-back").classList.remove("show");
+    $("#compare-banner").style.display = "none";
+    document.body.style.overflow = "";
+    renderAll();
+  };
+  $("#modal-close").onclick = closeModal;
+  $("#modal-back").onclick = (e) => { if (e.target === $("#modal-back")) closeModal(); };
+  $("#cb-cancel").onclick = () => { STATE.compareMode = false; $("#compare-banner").style.display = "none"; renderTopics(); };
+  $("#theme-toggle").onclick = () => {
+    const cur = document.documentElement.getAttribute("data-theme");
+    document.documentElement.setAttribute("data-theme", cur === "dark" ? "light" : "dark");
+    renderHeatmap();
+  };
+  $("#copy-share").onclick = (e) => {
+    e.preventDefault();
+    navigator.clipboard.writeText(location.href).then(() => {
+      $("#copy-share-status").textContent = " · copied!";
+      setTimeout(() => { $("#copy-share-status").textContent = ""; }, 2000);
+    }).catch(() => { $("#copy-share-status").textContent = " · (copy failed)"; });
+  };
+  ["cluster", "size", "alpha"].forEach((o) => {
+    $("#order-" + o).onclick = () => {
+      STATE.heatmapOrder = o;
+      ["cluster", "size", "alpha"].forEach((oo) => $("#order-" + oo).classList.toggle("on", oo === o));
+      renderHeatmap(); updateHash();
+    };
+  });
+  // Keyboard
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      if (STATE.focusId !== null) { closeModal(); return; }
+      $("#clear-filters").click();
+    }
+    if (e.key === "/" && document.activeElement !== $("#search")) { e.preventDefault(); $("#search").focus(); }
+  });
+  syncInputs();
+  ["cluster", "size", "alpha"].forEach((oo) => $("#order-" + oo).classList.toggle("on", oo === STATE.heatmapOrder));
+  renderAll();
+  window.addEventListener("resize", () => { renderGrowth(); });
+  window.addEventListener("hashchange", () => { readHash(); renderAll(); });
+}
+init();
+</script>
+</body>
+</html>
